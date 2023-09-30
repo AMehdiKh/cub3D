@@ -38,7 +38,7 @@ LIBMLX = ./MLX42/build/libmlx42.a
 .PHONY: clean
 man: $(NAME)
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/ael-khel/goinfre/homebrew/opt/glfw/lib" -o $@
+	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/ael-khel/homebrew/opt/glfw/lib" -o $@
 
 $(OBJDIR)/%.o: $(MANDIR)/%.c
 	@mkdir -p $(@D)
@@ -46,7 +46,7 @@ $(OBJDIR)/%.o: $(MANDIR)/%.c
 
 bonus: $(BNAME)
 $(BNAME): $(LIBFT) $(BOBJS)
-	$(CC) $(BOBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/ael-khel/goinfre/homebrew/opt/glfw/lib" -o $@
+	$(CC) $(BOBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/ael-khel/homebrew/opt/glfw/lib" -o $@
 
 $(BOBJDIR)/%.o: $(BONDIR)/%.c
 	@mkdir -p $(@D)
