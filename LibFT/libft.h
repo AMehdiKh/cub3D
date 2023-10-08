@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 07:54:13 by Ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/04 20:04:13 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:08:12 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
+
+// [*] ft_dprintf
 
 typedef struct s_dprintf
 {
@@ -34,6 +36,8 @@ void		ft_putstr_dpf(char *s, t_dprintf *tab);
 void		ft_putnbr_dpf(long n, t_dprintf *tab);
 void		ft_puthex_dpf(unsigned long n, t_dprintf *tab);
 
+// [*] get_next_line
+
 char		*get_next_line(int fd);
 char		*ft_check_nl(char **reserve);
 char		*ft_strjoin_gnl(char *reserve, char *buffer);
@@ -45,6 +49,8 @@ size_t		ft_strlen_gnl(const char *s);
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4096
 # endif
+
+// [*] LibFT
 
 size_t		ft_strlcpy(char *dst, const char *src, size_t size);
 size_t		ft_strlcat(char *dst, const char *src, size_t size);

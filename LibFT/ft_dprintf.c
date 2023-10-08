@@ -6,11 +6,12 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 02:44:18 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/04 19:23:34 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:12:28 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
 const char	*ft_check_spec(const char *format, t_dprintf *tab)
 {
@@ -52,5 +53,7 @@ int	ft_dprintf(int fd, const char *format, ...)
 			tab->len += write(fd, format++, 1);
 	}
 	va_end(tab->ap);
-	return (tab->len);
+	if (fd == 2)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

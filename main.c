@@ -6,27 +6,20 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:25:12 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/03 20:23:55 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/08 17:26:54 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "LibFT/libft.h"
 #include "cub3d.h"
-#include <stdlib.h>
 
-void	ft_err(char **ptr, char *str)
+int	main(int ac, char **av)
 {
-	if (str)
-		ft_putendl_fd(str, 2);
-	else if (errno)
-		perror("\e[0;31mError ");
-	ft_clear((void **)ptr);
-	ft_printf("\e[0;32mIt must run like this : ./cub3d [map_name].cub\n");
-	exit(EXIT_FAILURE);
-}
+	t_map	map_data[1];
 
-int	main(int ac, char **av, char **env)
-{
-	if (ac != 2)
-		return (EXIT_FAILURE);
+	ft_bzero(map_data, sizeof(map_data));
+	ft_check_arg(ac, av[1]);
+	ft_parse_map(map_data, ft_open_map(av[1]));
+	ft_check_map(map_data);
 	return (EXIT_SUCCESS);
 }
