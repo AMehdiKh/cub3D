@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:40:49 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/08 17:41:59 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:34:54 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	ft_check_arg(int ac, char *av)
 {
 	if (ac != 2)
-		ft_err("[!] Error: It must be like this: ./cub3d [map_name].cub", 1);
+		ft_err("[!] Error: It must be like this: ./cub3d [map_name].cub", NULL);
 	if (ft_strlen(av) <= 4)
-		ft_err("[!] Error: The map's name format is incorrect", 1);
+		ft_err("[!] Error: The map's name format is incorrect", NULL);
 	if (ft_strncmp(".cub", av + (ft_strlen(av) - 4), 4))
-		ft_err("[!] Error: The map must be in [.cub] format", 1);
+		ft_err("[!] Error: The map must be in [.cub] format", NULL);
 }
 
 char	*ft_open_map(char *map_name)
@@ -50,15 +50,20 @@ char	*ft_open_map(char *map_name)
 	return (close(fd), free(buffer), line);
 }
 
-int	ft_parse_map(t_map *map_data, char *line)
+void	ft_parse_map(t_map *map_data, char *line)
 {
 	int		i;
 
-	i = -1;
-	while (line[++i])
+	i = 0;
+	while (line[i])
+	{
 		if (line[i] == '\t')
-			return (free(line),
-				ft_err("[!] Error: The map has TAB character", 1));
+		{
+			free(line);
+			ft_err("[!] Error: The map has TAB character", NULL);
+		}
+		++i;
+	}
 	map_data->map = ft_split(line, '\n');
 	free(line);
 	if (!map_data->map)
@@ -66,7 +71,6 @@ int	ft_parse_map(t_map *map_data, char *line)
 	if (!*map_data->map)
 	{
 		free(map_data->map);
-		ft_err("[!] Error: The map is empty", 1);
+		ft_err("[!] Error: The map is empty", NULL);
 	}
 }
-

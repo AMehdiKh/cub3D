@@ -6,7 +6,7 @@
 #    By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2023/10/06 15:42:15 by ael-khel         ###   ########.fr        #
+#    Updated: 2023/10/10 18:23:46 by ael-khel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = cub3D
 ################################################################################
 OBJ_DIR = objs
 
-FILES = main utils parse_map
+FILES = main parse_map check_directions check_rgb utils
 
 SRCS = ${addsuffix .c, $(FILES)}
 
