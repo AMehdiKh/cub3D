@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/10 18:33:56 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:34:27 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_check
 
 	int		f_elem;
 	int		c_elem;
+	int		comma_count;
 	int		digit_count;
 	int		digit;
 
@@ -65,12 +66,16 @@ void	ft_parse_map(t_map *map_data, char *line);
 void	ft_check_map(t_map *map_data);
 void	ft_check_elements(t_map *map_data);
 void	ft_direc_elem(t_map *map_data, char *dire_text, int *dire_elem);
+void	ft_check_content(t_map *map_data, size_t start);
+int		ft_all_elements(t_check *map_check);
+
+
 // check_rgb.c
 void	ft_rgb_elem(t_map *map_data, char **elem, int option);
 void	ft_check_rgb(t_map *map_data, char *elem, int *color);
 void	ft_rgb_init(t_map *map_data, char *elem, int *color, int *i);
 // utils.c
-int		ft_err(char *str, int option);
+int		ft_err(char *str, t_map *map_data);
 void	ft_clear(void **ptr);
 void	ft_destroy_map_data(t_map *map_data);
 

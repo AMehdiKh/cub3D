@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:15:13 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/10 20:37:58 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:44:20 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	ft_rgb_elem(t_map *map_data, char **elem, int option)
 	}
 	if (map_data->map_check->digit_count != 3)
 		ft_err("[!] Error: Invalid map.", map_data);
+	if (map_data->map_check->comma_count != 2)
+		ft_err("[!] Error: Invalid map.", map_data);
 	map_data->map_check->digit_count = 0;
+	map_data->map_check->comma_count = 0;
 	map_data->map_check->digit = 0;
 	if (option)
 		map_data->map_check->c_elem = 1;
@@ -45,7 +48,10 @@ void	ft_check_rgb(t_map *map_data, char *elem, int *color)
 		if (ft_isdigit(elem[i]))
 			ft_rgb_init(map_data, elem, color, &i);
 		else if (elem[i] == ',' && map_data->map_check->digit == 1)
+		{
+			map_data->map_check->comma_count += 1 ;
 			map_data->map_check->digit = 0;
+		}
 		else
 			ft_err("[!] Error: Invalid map.", map_data);
 		++i;

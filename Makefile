@@ -6,7 +6,7 @@
 #    By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2023/10/10 18:23:46 by ael-khel         ###   ########.fr        #
+#    Updated: 2023/10/11 19:15:01 by ael-khel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJS = ${SRCS:%.c=$(OBJ_DIR)/%.o}
 ################################################################################
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 ################################################################################
 LIBFT = LibFT/libft.a
 ################################################################################
@@ -32,7 +32,7 @@ LIBFT = LibFT/libft.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(OBJS) $(LIBFT) -o $@
+	$(CC) $(OBJS) $(LIBFT) -fsanitize=address -static-libsan -o $@
 
 $(LIBFT):
 	$(MAKE) -C LibFT

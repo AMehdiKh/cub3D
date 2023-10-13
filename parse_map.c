@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:40:49 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/10 20:34:54 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:05:39 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,21 @@ char	*ft_open_map(char *map_name)
 
 	fd = open(map_name, O_RDONLY);
 	if (fd < 0)
-		ft_err(NULL, 1);
+		ft_err(NULL, NULL);
 	line = NULL;
 	buffer = ft_calloc(4096, 1);
 	if (!buffer)
-		return (close(fd), free(buffer), ft_err(NULL, 1), NULL);
+		return (close(fd), free(buffer), ft_err(NULL, NULL), NULL);
 	nbyte = 1;
 	while (nbyte)
 	{
 		nbyte = read(fd, buffer, 4096);
 		if (nbyte < 0)
-			return (close(fd), free(buffer), free(line), ft_err(NULL, 1), NULL);
+			return (close(fd), free(buffer), free(line), ft_err(NULL, NULL), NULL);
 		buffer[nbyte] = '\0';
 		line = ft_strjoin_gnl(line, buffer);
 		if (!line)
-			return (close(fd), free(buffer), ft_err(NULL, 1), NULL);
+			return (close(fd), free(buffer), ft_err(NULL, NULL), NULL);
 	}
 	return (close(fd), free(buffer), line);
 }
@@ -67,7 +67,7 @@ void	ft_parse_map(t_map *map_data, char *line)
 	map_data->map = ft_split(line, '\n');
 	free(line);
 	if (!map_data->map)
-		ft_err(NULL, 1);
+		ft_err(NULL, NULL);
 	if (!*map_data->map)
 	{
 		free(map_data->map);
