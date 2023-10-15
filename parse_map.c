@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:40:49 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/11 15:05:39 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:03:31 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,55 +22,67 @@ void	ft_check_arg(int ac, char *av)
 		ft_err("[!] Error: The map must be in [.cub] format", NULL);
 }
 
-char	*ft_open_map(char *map_name)
+void	ft_count_map_lines(t_map *map_data, char *map_name)
 {
-	int		fd;
-	int		nbyte;
 	char	*line;
-	char	*buffer;
+	int		fd;
 
 	fd = open(map_name, O_RDONLY);
 	if (fd < 0)
 		ft_err(NULL, NULL);
-	line = NULL;
-	buffer = ft_calloc(4096, 1);
-	if (!buffer)
-		return (close(fd), free(buffer), ft_err(NULL, NULL), NULL);
-	nbyte = 1;
-	while (nbyte)
+	line = "1337";
+	while (line)
 	{
-		nbyte = read(fd, buffer, 4096);
-		if (nbyte < 0)
-			return (close(fd), free(buffer), free(line), ft_err(NULL, NULL), NULL);
-		buffer[nbyte] = '\0';
-		line = ft_strjoin_gnl(line, buffer);
-		if (!line)
-			return (close(fd), free(buffer), ft_err(NULL, NULL), NULL);
+		line = get_next_line(fd);
+		if (line)
+			++map_data->map_check->line_count;
+		free(line);
 	}
-	return (close(fd), free(buffer), line);
+	close(fd);
+	if (map_data->map_check->line_count == 0)
+		ft_err("[!] Error: The map is empty", NULL);
 }
 
-void	ft_parse_map(t_map *map_data, char *line)
+void	ft_open_map(t_map *map_data, char *map_name)
 {
+	int		line_count;
+	int		fd;
 	int		i;
 
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '\t')
-		{
-			free(line);
-			ft_err("[!] Error: The map has TAB character", NULL);
-		}
-		++i;
-	}
-	map_data->map = ft_split(line, '\n');
-	free(line);
+	ft_count_map_lines(map_data, map_name);
+	line_count = map_data->map_check->line_count;
+	map_data->map = ft_calloc((line_count + 1), sizeof(char *));
 	if (!map_data->map)
 		ft_err(NULL, NULL);
-	if (!*map_data->map)
+	fd = open(map_name, O_RDONLY);
+	if (fd < 0)
+		ft_err(NULL, map_data);
+	i = 0;
+	while (i < line_count)
+		map_data->map[i++] = get_next_line(fd);
+	close(fd);
+}
+
+void	ft_parse_map(t_map *map_data, char *map_name)
+{
+	int		i;
+	int		j;
+
+	ft_open_map(map_data, map_name);
+	i = 0;
+	while (map_data->map[i])
 	{
-		free(map_data->map);
-		ft_err("[!] Error: The map is empty", NULL);
+		j = 0;
+		while (map_data->map[i][j])
+		{
+			if (map_data->map[i][j] == '\t')
+				ft_err("[!] Error: The map has TAB character", map_data);
+			if (map_data->map[i][j] == '\n' && !map_data->map[i + 1])
+				ft_err("[!] Error: The Map has empty lines", map_data);
+			if (map_data->map[i][j] == '\n')
+				map_data->map[i][j] = '\0';
+			++j;
+		}
+		++i;
 	}
 }

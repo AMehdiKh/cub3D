@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:25:12 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/08 17:26:54 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:54:15 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 
 	ft_bzero(map_data, sizeof(map_data));
 	ft_check_arg(ac, av[1]);
-	ft_parse_map(map_data, ft_open_map(av[1]));
+	ft_parse_map(map_data, av[1]);
 	ft_check_map(map_data);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/13 17:34:27 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:53:54 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 typedef struct s_check
 {
 	char	**elem;
+
+	int		line_count;
 
 	int		no_elem;
 	int		so_elem;
@@ -60,16 +62,16 @@ typedef struct s_map
 
 // parse_map.c
 void	ft_check_arg(int ac, char *av);
-char	*ft_open_map(char *map_name);
-void	ft_parse_map(t_map *map_data, char *line);
+void	ft_count_map_lines(t_map *map_data, char *map_name);
+void	ft_open_map(t_map *map_data, char *map_name);
+void	ft_parse_map(t_map *map_data, char *map_name);
+
 // check_directions.c
 void	ft_check_map(t_map *map_data);
 void	ft_check_elements(t_map *map_data);
 void	ft_direc_elem(t_map *map_data, char *dire_text, int *dire_elem);
 void	ft_check_content(t_map *map_data, size_t start);
 int		ft_all_elements(t_check *map_check);
-
-
 // check_rgb.c
 void	ft_rgb_elem(t_map *map_data, char **elem, int option);
 void	ft_check_rgb(t_map *map_data, char *elem, int *color);

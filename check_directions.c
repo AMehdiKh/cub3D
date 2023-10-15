@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:38:30 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/10/13 18:45:14 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/10/14 20:36:42 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	ft_check_content(t_map *map_data, size_t start)
 	y = start;
 	while (map[y])
 	{
-		if (!map[y][0])
-			ft_err("[!] Error: The map has empty line.", map_data);
+		if (map[y][0] == '\0')
+			ft_err("[!] Error: The Map has empty lines", map_data);
 		x = 0;
 		while (map[y][x])
 		{
