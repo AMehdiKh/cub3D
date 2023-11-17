@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:45:21 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/13 15:42:34 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/17 13:16:50 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_graphics(t_map *map_data)
 	mlx_loop_hook(mlx->win, &ft_hooks, mlx);
 	mlx_close_hook(mlx->win, &ft_esc, mlx);
 	mlx_loop(mlx->win);
+	ft_esc(mlx);
 }
 
 void	ft_init_mlx(t_mlx *mlx, int x, int y)

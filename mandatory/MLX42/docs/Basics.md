@@ -38,11 +38,11 @@ $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
 
 clean:
-	@rm -rf $(OBJS)
-	@rm -rf $(LIBMLX)/build
+	@rm -f $(OBJS)
+	@rm -f $(LIBMLX)/build
 
 fclean: clean
-	@rm -rf $(NAME)
+	@rm -f $(NAME)
 
 re: clean all
 

@@ -124,11 +124,11 @@ A: Officially, _no_. However, ask your head of studies first about using it, see
 
 Q: **_"Is it faster?"_**
 
-A: From my personal projects there was a considerable performance gain, especially when compiled with `-Ofast`. Projects such as FDF could rotate their maps mindblowingly smooth and even larger maps with a width and height of 1000+ points moved/rotated relatively smooth, so in short, yes.
+A: From my personal projects there was a considerable peformance gain, especially when compiled with `-Ofast`. Projects such as FDF could rotate their maps mindblowingly smooth and even larger maps with a width and height of 1000+ points moved/rotated relatively smooth, so in short, yes.
 
 Q: **_"Can I just drag and drop it into my old project and just not do anything?"_**
 
-A: No. That's not how libraries work. Sure they target and do sort of the same thing but the functions each library provides are too different, even a little bit in terms of behavior. And no there is no easy way to convert from the "old" to the "new" it will be somewhat tedious work.
+A: Well, um uh, no ?? That's not how libraries work. Sure they target and do sort of the same thing but the functions each library provides are too different, even a little bit in terms of behavior. And no there is no easy way to convert from the "old" to the "new" it will be somewhat tedious work.
 
 Q: **_"We should be able to deal with the fact that MiniLibX is not perfect, it is by design and makes us better programmers."_**
 
