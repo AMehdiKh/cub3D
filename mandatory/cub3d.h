@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/10 18:22:16 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/17 23:54:47 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_check
 typedef struct s_map
 {
 	t_check		map_check[1];
-	t_cord		player[1];
+	t_cord		character[1];
 
 	char		*no_text;
 	char		*so_text;
@@ -66,22 +66,21 @@ typedef struct s_map
 	int			c_color;
 	int			f_color;
 
-	char		player_dir;
+	char		character_dire;
 
 	char		**map;
-	size_t		start;
 
-	int			max_width;
-	int			max_height;
+	int			map_width;
+	int			map_height;
 
 }	t_map;
 
 typedef struct s_player
 {
 	t_cord		*player;
-	double		rotation_angle;
-	double		rotation_speed;
 	int			move_speed;
+	double		rotation_speed;
+	double		rotation_angle;
 	double		field_of_view;
 	double		wall_strip_width;
 	double		num_rays;
@@ -104,10 +103,10 @@ void	ft_parse_map(t_map *map_data, char *map_name);
 // check_directions.c
 void	ft_check_map(t_map *map_data);
 void	ft_check_elements(t_map *map_data);
-void	ft_direc_elem(t_map *map_data, char *dire_text, int *dire_elem);
+void	ft_direc_elem(t_map *map_data, char **dire_text, int *dire_elem);
 int		ft_all_elements(t_check *map_check);
-void	ft_check_content(t_map *map_data);
-void	ft_check_player(t_map *map_data, int x, int y);
+void	ft_check_content(t_map *map_data, int start);
+void	ft_check_character(t_map *map_data, int x, int y);
 void	ft_check_walls(t_map *map_data, char **map, size_t x, size_t y);
 
 // check_rgb.c
@@ -126,10 +125,10 @@ void	ft_mini_map(t_mlx *mlx);
 void	ft_square(t_mlx *mlx, t_cord *square, int color);
 void	ft_circle(t_mlx *mlx, int xc, int yc, int r, int color);
 void	ft_draw_pixels(t_mlx *mlx, int xc, int yc, int x, int y, int color);
-void	ft_isolate_content(t_map *map_data);
+void	ft_isolate_content(t_map *map_data, int start);
 void	ft_init_cord(t_cord *cord, int x, int y);
 
-double	ft_player_direction(t_map *map_data);
+double	ft_character_direction(t_map *map_data);
 void	ft_turn(t_mlx *mlx, int pixel);
 void	ft_move_straight(t_mlx *mlx, int pixel);
 void	ft_move_sides(t_mlx *mlx, int pixel);
@@ -139,5 +138,9 @@ void	bresenhams_line(t_mlx *mlx, int x1, int y1, int x2, int y2);
 void	dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1);
 void	ft_esc(void *param);
 void	ft_cast_rays(t_mlx	*mlx);
+double	ft_normalize_angle(double angle);
+int		ft_abs(int value);
+
+
 
 #endif

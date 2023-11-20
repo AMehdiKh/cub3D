@@ -6,7 +6,7 @@
 #    By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2023/11/17 13:20:51 by ael-khel         ###   ########.fr        #
+#    Updated: 2023/11/17 14:27:24 by ael-khel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJS = ${SRCS:%.c=$(OBJ_DIR)/%.o}
 ################################################################################
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 ################################################################################
 LIBFT = LibFT/libft.a
 
@@ -34,7 +34,7 @@ LIBMLX = MLX42/build/libmlx42.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm -o $@
+	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm -fsanitize=address -static-libasan -o $@
 
 $(LIBFT):
 	$(MAKE) -C LibFT
