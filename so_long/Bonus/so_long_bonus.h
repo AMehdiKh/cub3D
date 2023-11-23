@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 02:31:12 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/03/15 06:13:18 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/17 22:38:01 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ typedef struct s_mlx
 	int			last_coin;
 	int			mid_map;
 	int			str_x;
-	int			max_width;
-	int			max_height;
+	int			map_width;
+	int			map_height;
 	int			random;
 }	t_mlx;
 

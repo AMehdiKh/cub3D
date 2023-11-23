@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 02:31:12 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/03/06 16:46:52 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/17 22:38:01 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ typedef struct s_mlx
 	int			coin;
 	int			exit;
 	int			moves;
-	int			max_width;
-	int			max_height;
+	int			map_width;
+	int			map_height;
 }	t_mlx;
 
 void	ft_check_arg(t_mlx *mlx, char *av);

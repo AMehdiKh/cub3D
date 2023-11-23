@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 07:35:40 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/03/15 03:19:59 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/17 22:38:01 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_check_arg(t_mlx *mlx, char *av)
 	win = mlx_init(1, 1, "this is only for fetching monitor size", false);
 	if (!win)
 		ft_err(NULL, "\e[0;31mError: MLX init for monitor size failed");
-	mlx_get_monitor_size(0, &mlx->max_width, &mlx->max_height);
+	mlx_get_monitor_size(0, &mlx->map_width, &mlx->map_height);
 	mlx_terminate(win);
 }
 

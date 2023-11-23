@@ -6,14 +6,12 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:45:21 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/17 23:56:16 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/22 20:39:17 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <bits/posix2_lim.h>
-#include <cstdint>
-#include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 
 void	ft_graphics(t_map *map_data)
@@ -50,7 +48,7 @@ void	ft_init_mlx(t_mlx *mlx, int x, int y)
 	mlx->player_data->rotation_angle = ft_character_direction(mlx->map_data);
 	mlx->player_data->rotation_speed = 2 * (M_PI / 180);
 	mlx->player_data->move_speed = 3;
-	mlx->player_data->field_of_view = 40 * (M_PI / 180);
+	mlx->player_data->field_of_view = 60 * (M_PI / 180);
 	mlx->player_data->wall_strip_width = 1;
 	mlx->player_data->num_rays = (x * TILE_SIZE) / mlx->player_data->wall_strip_width;
 }
@@ -82,56 +80,130 @@ void	ft_mini_map(t_mlx *mlx)
 	ft_cast_rays(mlx);
 }
 
-void	ft_cast_rays(t_mlx	*mlx)
+// void	ft_cast_rays(t_mlx	*mlx)
+// {
+// 	t_player	*player_data;
+// 	// t_cord		wall_hit[1];
+// 	double		ray_angle;
+// 	int			i;
+
+// 	player_data = mlx->player_data;
+// 	ray_angle = player_data->rotation_angle - (player_data->field_of_view / 2);
+// 	i = 0;
+// 	while (ray_angle < player_data->rotation_angle + (player_data->field_of_view / 2))
+// 	{
+
+// 		// ft_V_intersection();
+// 		ft_H_intersection(mlx->map_data->map, player_data->player, mlx->h_intersection, ray_angle);
+// 		dda(mlx, player_data->player->x, player_data->player->y, mlx->h_intersection->x, mlx->h_intersection->y);
+// 		ray_angle += player_data->field_of_view / player_data->num_rays;
+// 		++i;
+// 	}
+// }
+void	ft_cast_rays(t_mlx *mlx)
 {
 	t_player	*player_data;
-	t_cord		wall_hit[1];
-	double		ray_angle;
+	t_casting	cast[1];
 	int			i;
+	// int			x;
+	// int			y;
 
 	player_data = mlx->player_data;
-	ray_angle = player_data->rotation_angle - (player_data->field_of_view / 2);
+	cast->map = mlx->map_data->map;
+	cast->player = player_data->player;
+	cast->ray_angle = (player_data->rotation_angle - (player_data->field_of_view / 2));
+	cast->ray_angle = ft_normalize_angle(cast->ray_angle);
 	i = 0;
-	while (ray_angle < player_data->rotation_angle + (player_data->field_of_view / 2))
+	while (i < player_data->num_rays)
 	{
-
-		// ft_V_intersection();
-		ft_H_intersection(mlx->map_data->map, player_data);
-		// wall_hitft_nearest_point();
-		dda(mlx, player_data->player, wall_hit);
-		ray_angle += player_data->field_of_view / player_data->num_rays;
+		// x = mlx->player_data->player->x + cos(ray_angle) * 100;
+		// y = mlx->player_data->player->y + sin(ray_angle) * 100;
+		// dda(mlx, player_data->player->x, player_data->player->y, x, y);
+		ft_wall_hit(cast);
+		dda(mlx, player_data->player->x, player_data->player->y, cast->wall_hit->x, cast->wall_hit->y);
+		cast->ray_angle += player_data->field_of_view / player_data->num_rays;
+		cast->ray_angle = ft_normalize_angle(cast->ray_angle);
 		++i;
 	}
 }
 
-void	ft_H_intersection(char **map, t_cord *player, double ray_angle)
+void	ft_wall_hit(t_casting *cast)
 {
-	t_cord	intersection[1];
+	// double		h_distance;
+	// double		v_distance;
+
+	ft_H_intersection(cast);
+	// ft_V_intersection(cast);
+	// h_distance = ft_cord_distance(cast->player, cast->h_intersection);
+	// v_distance = ft_cord_distance(cast->player, cast->v_intersection);
+	// if (h_distance < v_distance)
+		ft_init_cord(cast->wall_hit, cast->h_intersection->x, cast->h_intersection->y);
+	// else
+	// 	ft_init_cord(cast->wall_hit, cast->v_intersection->x, cast->v_intersection->y);
+	
+}
+
+void	ft_V_intersection(t_casting *cast)
+{
 	int		ray_facing_up;
 	int		ray_facing_down;
 	int		ray_facing_right;
 	int		ray_facing_left;
-	int		x_step;
-	int		y_step;
-	int		x_first;
-	int		y_first;
 
-	ray_facing_down = ray_angle > 0 && ray_angle < M_PI;
+	ray_facing_down = cast->ray_angle > 0 && cast->ray_angle < M_PI;
 	ray_facing_up = !ray_facing_down * -1;
-	ray_facing_right = ray_angle < 0.5 * M_PI || ray_angle > 1.5 * M_PI;
+	ray_facing_right = cast->ray_angle < 0.5 * M_PI || cast->ray_angle > 1.5 * M_PI;
 	ray_facing_left = !ray_facing_right * -1;
 
-	x_step = (TILE_SIZE / tan(ray_angle) * ray_facing_left) + (TILE_SIZE / tan(ray_angle) * ray_facing_right);
-	y_step = (TILE_SIZE * ray_facing_up) + (TILE_SIZE * ray_facing_down);
-	y_first = (player->y / TILE_SIZE) * TILE_SIZE + (TILE_SIZE * ray_facing_down);
-	x_first = player->x + (ft_abs(y_first - player->y) / tan(ray_angle) * ray_facing_left) + (ft_abs(y_first - player->y) / tan(ray_angle) * ray_facing_right);
-	ft_init_cord(intersection, x_first, y_first);
-	while (map[intersection->y / TILE_SIZE][intersection->x / TILE_SIZE] != '1')
+	cast->x_step = (TILE_SIZE * ray_facing_left) + (TILE_SIZE * ray_facing_right);
+	cast->y_step = TILE_SIZE * (tan(cast->ray_angle) * ray_facing_down + tan(cast->ray_angle) * ray_facing_up);
+	cast->x_first = (cast->player->x / TILE_SIZE) * TILE_SIZE + (TILE_SIZE * ray_facing_right);
+	// cast->y_first = cast->player->y + ft_abs(cast->x_first - cast->player->x) * tan(cast->ray_angle);
+	cast->y_first = cast->player->y + (ft_abs(cast->x_first - cast->player->x) * tan(cast->ray_angle) * ray_facing_down) + (ft_abs(cast->x_first - cast->player->x) * tan(cast->ray_angle) * ray_facing_up);	
+	ft_init_cord(cast->v_intersection, cast->x_first, cast->y_first);
+	while (cast->map[cast->v_intersection->y / TILE_SIZE][cast->v_intersection->x / TILE_SIZE] != '1')
 	{
-		intersection->x += x_step;
-		intersection->y += y_step;
+		cast->v_intersection->x += cast->x_step;
+		cast->v_intersection->y += cast->y_step;
 	}
 }
+
+void	ft_H_intersection(t_casting *cast)
+{
+	int		ray_facing_up;
+	int		ray_facing_down;
+	int		ray_facing_right;
+	int		ray_facing_left;
+
+	ray_facing_down = cast->ray_angle > 0 && cast->ray_angle < M_PI;
+	ray_facing_up = !ray_facing_down * -1;
+	ray_facing_right = cast->ray_angle < 0.5 * M_PI || cast->ray_angle > 1.5 * M_PI;
+	ray_facing_left = !ray_facing_right * -1;
+
+	cast->x_step = TILE_SIZE / tan(cast->ray_angle);
+	cast->x_step *= (ray_facing_left && cast->x_step > 0) ? -1 : 1;
+	cast->x_step *= (ray_facing_right && cast->x_step < 0) ? -1 : 1;
+	
+	cast->y_step = (TILE_SIZE * ray_facing_up) + (TILE_SIZE * ray_facing_down);
+	cast->y_first = (cast->player->y / TILE_SIZE) * TILE_SIZE + (TILE_SIZE * ray_facing_down);
+	cast->x_first = cast->player->x + (ft_abs(cast->y_first - cast->player->y) / tan(cast->ray_angle));
+	if (ray_facing_up)
+		cast->y_first--;
+	ft_init_cord(cast->h_intersection, cast->x_first, cast->y_first);
+	while (cast->h_intersection->y >= 0 && cast->h_intersection->y <=1000 && cast->h_intersection->x >= 0 && cast->h_intersection->x <= 1000)
+	{
+		if (cast->map[cast->h_intersection->y / TILE_SIZE][cast->h_intersection->x / TILE_SIZE] == '1')
+			break ;
+		cast->h_intersection->x += cast->x_step;
+		cast->h_intersection->y += cast->y_step;
+	}
+}
+
+double	ft_cord_distance(t_cord *p1, t_cord *p2)
+{
+	return (sqrt(pow(p2->x - p1->x, 2) + pow(p2->y - p1->y, 2)));
+}
+
 int	ft_abs(int value)
 {
 	if (value < 0)
@@ -139,29 +211,6 @@ int	ft_abs(int value)
 	return (value);
 }
 
-void	ft_cast_rays(t_mlx	*mlx)
-{
-	t_player	*player_data;
-	double		ray_angle;
-	int			i;
-	int			x;
-	int			y;
-
-	player_data = mlx->player_data;
-	ray_angle = (player_data->rotation_angle - (player_data->field_of_view / 2));
-	ray_angle = ft_normalize_angle(ray_angle);
-	i = 0;
-	while (i < player_data->num_rays)
-	{
-		x = mlx->player_data->player->x + cos(ray_angle) * 100;
-		y = mlx->player_data->player->y + sin(ray_angle) * 100;
-		dda(mlx, player_data->player->x, player_data->player->y, x, y);
-		ray_angle += player_data->field_of_view / player_data->num_rays;
-		ray_angle = ft_normalize_angle(ray_angle);
-		++i;
-	}
-	printf("%F\n", ray_angle);
-}
 
 double	ft_normalize_angle(double angle)
 {

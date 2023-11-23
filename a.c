@@ -58,3 +58,47 @@ int main() {
 	drawAndFillCircle(xc, yc, r, fillColor, targetColor);
 	return 0;
 }
+
+
+
+// void	ft_cast_rays(t_mlx	*mlx)
+// {
+// 	t_player	*player_data;
+// 	t_cord		wall_hit[1];
+// 	double		ray_angle;
+// 	int			i;
+
+// 	player_data = mlx->player_data;
+// 	ray_angle = player_data->rotation_angle - (player_data->field_of_view / 2);
+// 	i = 0;
+// 	while (ray_angle < player_data->rotation_angle + (player_data->field_of_view / 2))
+// 	{
+
+// 		// ft_V_intersection();
+// 		ft_H_intersection(mlx->map_data->map, player_data);
+// 		// wall_hitft_nearest_point();
+// 		dda(mlx, player_data->player, wall_hit);
+// 		ray_angle += player_data->field_of_view / player_data->num_rays;
+// 		++i;
+// 	}
+// }
+
+// void	ft_H_intersection(char **map, t_cord *player, double ray_angle)
+// {
+// 	t_cord	intersection[1];
+// 	int		x_step;
+// 	int		y_step;
+// 	int		x_first;
+// 	int		y_first;
+
+// 	x_step = TILE_SIZE / tan(ray_angle);
+// 	y_step = TILE_SIZE;
+// 	y_first = (player->y / TILE_SIZE) * TILE_SIZE;
+// 	x_first = player->x + abs(player->y - y_first) / tan(ray_angle);
+// 	ft_init_cord(intersection, x_first, y_first);
+// 	while (map[intersection->y / TILE_SIZE][intersection->x / TILE_SIZE] != '1')
+// 	{
+// 		intersection->x += x_step;
+// 		intersection->y += y_step;
+// 	}
+// }

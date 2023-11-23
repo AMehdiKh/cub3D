@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 02:58:06 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/03/06 16:18:09 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/17 22:38:01 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	map_check(t_mlx *mlx)
 			if (mlx->x != (int)ft_strlen(map[mlx->y]))
 				ft_err(map, "\e[0;31mError: The map is not rectangular");
 	}
-	if ((mlx->y * 72) > mlx->max_height || (mlx->x * 72) > mlx->max_width)
+	if ((mlx->y * 72) > mlx->map_height || (mlx->x * 72) > mlx->map_width)
 		ft_err(map, "\e[0;31mError: The map is bigger than monitor size");
 	if (mlx->player != 1 || mlx->exit != 1 || mlx->coin < 1)
 		ft_err(map, "\e[0;31mError: The number of items in map is incorrect");
