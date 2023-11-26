@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/22 15:05:37 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/25 23:05:48 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,29 +93,26 @@ typedef struct s_mlx
 	mlx_t		*win;
 	t_map		*map_data;
 	t_player	player_data[1];
-	t_cord		h_intersection[1];
-	t_cord		v_intersection[1];
-	t_cord		wall_hit[1];
-	int			x_step;
-	int			y_step;
-	int			x_first;
-	int			y_first;
-	
 }	t_mlx;
 
 typedef struct s_casting
 {
 	char		**map;
 	t_cord		*player;
-	t_cord		h_intersection[1];
-	t_cord		v_intersection[1];
+	t_cord		h_insec[1];
+	t_cord		v_insec[1];
 	t_cord		wall_hit[1];
 	double		ray_angle;
-	int			x_step;
-	int			y_step;
-	int			x_first;
-	int			y_first;
-	
+	int			ray_up;
+	int			ray_down;
+	int			ray_right;
+	int			ray_left;
+	double			x_step;
+	double			y_step;
+	double			x_first;
+	double			y_first;
+	int			width;
+	int			height;
 }	t_casting;
 
 // parse_map.c
@@ -167,7 +164,7 @@ int		ft_abs(int value);
 void	ft_H_intersection(t_casting *cast);
 void	ft_V_intersection(t_casting *cast);
 void	ft_wall_hit(t_casting *cast);
-
 double	ft_cord_distance(t_cord *p1, t_cord *p2);
+void	ft_ray_directions(t_casting *cast);
 
 #endif
