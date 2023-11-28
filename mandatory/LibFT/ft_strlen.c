@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 19:43:55 by Ael-khel          #+#    #+#             */
-/*   Updated: 2022/10/15 11:04:24 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/27 02:55:03 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i++])
 		;
 	return (i - 1);

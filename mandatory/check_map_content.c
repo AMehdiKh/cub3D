@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 21:45:09 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/17 22:47:46 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/27 23:17:13 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,27 +83,27 @@ void	ft_check_walls(t_map *map_data, char **map, size_t x, size_t y)
 {
 	if (map[y][x] == '0' || map[y][x] == map_data->character_dire)
 	{
-		if (x > ft_strlen(map[y - 1])
-			|| (y != 0 && x != 0 && map[y - 1][x - 1] == ' '))
-			ft_err("[!] Error: Map is not surrounded by 1", map_data);
-		if (x + 1 > ft_strlen(map[y - 1])
-			|| (y != 0 && map[y - 1][x] == ' '))
-			ft_err("[!] Error: Map is not surrounded by 1", map_data);
-		if (x + 2 > ft_strlen(map[y - 1])
-			|| (y != 0 && map[y - 1][x + 1] == ' '))
-			ft_err("[!] Error: Map is not surrounded by 1", map_data);
-		if (x != 0 && map[y][x - 1] == ' ')
-			ft_err("[!] Error: Map is not surrounded by 1", map_data);
-		if (map[y][x + 1] == ' ')
-			ft_err("[!] Error: Map is not surrounded by 1", map_data);
+		if (map[y][x + 1] == '\0' || map[y][x + 1] == ' ')
+			ft_err("[1] Error: Map is not surrounded by 1", map_data);
+		if (x == 0 || map[y][x - 1] == ' ')
+			ft_err("[2] Error: Map is not surrounded by 1", map_data);
+		if (!map[y + 1] || x + 1 > ft_strlen(map[y + 1])
+			|| map[y + 1][x] == ' ')
+			ft_err("[3] Error: Map is not surrounded by 1", map_data);
+		if (y == 0 || x + 1 > ft_strlen(map[y - 1]) || map[y - 1][x] == ' ')
+			ft_err("[4] Error: Map is not surrounded by 1", map_data);
+		if (x + 2 > ft_strlen(map[y + 1])
+			|| map[y + 1][x + 1] == ' ')
+			ft_err("[8] Error: Map is not surrounded by 1", map_data);
 		if (x > ft_strlen(map[y + 1])
 			|| (map[y + 1] && x != 0 && map[y + 1][x - 1] == ' '))
-			ft_err("[!] Error: Map is not surrounded by 1", map_data);
-		if (x + 1 > ft_strlen(map[y + 1])
-			|| (map[y + 1] && map[y + 1][x] == ' '))
-			ft_err("[!] Error: Map is not surrounded by 1", map_data);
-		if (x + 2 > ft_strlen(map[y + 1])
-			|| (map[y + 1] && map[y + 1][x + 1] == ' '))
-			ft_err("[!] Error: Map is not surrounded by 1", map_data);
+			ft_err("[7] Error: Map is not surrounded by 1", map_data);
+
+		if (y == 0 || x + 2 > ft_strlen(map[y - 1])
+			|| map[y - 1][x + 1] == ' ')
+			ft_err("[6] Error: Map is not surrounded by 1", map_data);
+		if (y == 0 || x > ft_strlen(map[y - 1])
+			|| (y != 0 && x != 0 && map[y - 1][x - 1] == ' '))
+			ft_err("[5] Error: Map is not surrounded by 1", map_data);
 	}
 }

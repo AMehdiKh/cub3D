@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:45:21 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/26 08:28:31 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/11/26 23:26:48 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,16 +93,16 @@ void	ft_cast_rays(t_mlx *mlx)
 	cast->player = player_data->player;
 	cast->ray_angle = player_data->rotation_angle
 		- player_data->field_of_view / 2;
-	cast->ray_angle = player_data->rotation_angle;
 	cast->ray_angle = ft_normalize_angle(cast->ray_angle);
 	i = 0;
-	while (i < player_data->num_rays)
+	while (cast->ray_angle < ft_normalize_angle(player_data->rotation_angle
+		+ player_data->field_of_view / 2))
 	{
 		ft_wall_hit(cast);
 		dda(mlx, player_data->player->x, player_data->player->y, cast->wall_hit->x, cast->wall_hit->y);
 		cast->ray_angle += player_data->field_of_view / player_data->num_rays;
 		cast->ray_angle = ft_normalize_angle(cast->ray_angle);
-		++i;
+		i += 0.5;
 	}
 }
 
