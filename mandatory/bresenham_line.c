@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 19:20:10 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/13 15:53:58 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:53:14 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 //     }
 // }
 
-void dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1) {
+void dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1, t_casting *cast) {
     int dx = abs(X1 - X0);
     int dy = abs(Y1 - Y0);
     int twoDy = 2 * dy;
@@ -40,9 +40,13 @@ void dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1) {
 
     int x = X0;
     int y = Y0;
-
+	int	color;
+	if (cast->h_found_wall)
+		color = 0x48bfe3ff;
+	else
+		color = 0xfb8500ff;
     // Plot the initial point
-    mlx_put_pixel(mlx->img, x, y, 0X5B305AFF);
+    mlx_put_pixel(mlx->img, x, y, color);
 
 
     // For lines with slope between 0 and 1
@@ -57,7 +61,7 @@ void dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1) {
                 decisionParameter += twoDy - twoDx;
                 y += slopeSignY;
             }
-		mlx_put_pixel(mlx->img, x, y, 0X5B305AFF);
+		mlx_put_pixel(mlx->img, x, y, color);
 
         }
     }
@@ -73,7 +77,7 @@ void dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1) {
                 decisionParameter += twoDx - twoDy;
                 x += slopeSignX;
             }
-			mlx_put_pixel(mlx->img, x, y, 0X5B305AFF);
+			mlx_put_pixel(mlx->img, x, y, color);
 
         }
     }

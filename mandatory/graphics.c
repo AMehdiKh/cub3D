@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:45:21 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/26 23:26:48 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:54:23 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	ft_init_mlx(t_mlx *mlx, int x, int y)
 	}
 	mlx->player_data->player = mlx->map_data->character;
 	mlx->player_data->rotation_angle = ft_character_direction(mlx->map_data);
-	mlx->player_data->rotation_speed = 1 * (M_PI / 180);
-	mlx->player_data->move_speed = 2;
+	mlx->player_data->rotation_speed = 2 * (M_PI / 180);
+	mlx->player_data->move_speed = 10;
 	mlx->player_data->field_of_view = 60 * (M_PI / 180);
 	mlx->player_data->wall_strip_width = 1;
 	mlx->player_data->num_rays = (x * TILE_SIZE) / mlx->player_data->wall_strip_width;
@@ -69,22 +69,22 @@ void	ft_mini_map(t_mlx *mlx)
 		{
 			ft_init_cord(square, x * TILE_SIZE, y * TILE_SIZE);
 			if (map_data->map[y][x] == '1')
-				ft_square(mlx, square, 0xE04B5AFF);
+				ft_square(mlx, square, 0x772f1aFF);
 			else
-				ft_square(mlx, square, 0xE49756FF);
+				ft_square(mlx, square, 0x55a630ff);
 			++x;
 		}
 		++y;
 	}
-	ft_player_square(mlx, mlx->player_data->player, 0x9A4C68FF, 4);
+	ft_player_square(mlx, mlx->player_data->player, 0xd90429FF, 2);
 	ft_cast_rays(mlx);
 }
-
+ 
 void	ft_cast_rays(t_mlx *mlx)
 {
 	t_player	*player_data;
 	t_casting	cast[1];
-	double		i;
+	int			i;
 
 	player_data = mlx->player_data;
 	cast->width = mlx->map_data->map_width * TILE_SIZE;
@@ -93,16 +93,14 @@ void	ft_cast_rays(t_mlx *mlx)
 	cast->player = player_data->player;
 	cast->ray_angle = player_data->rotation_angle
 		- player_data->field_of_view / 2;
-	cast->ray_angle = ft_normalize_angle(cast->ray_angle);
 	i = 0;
-	while (cast->ray_angle < ft_normalize_angle(player_data->rotation_angle
-		+ player_data->field_of_view / 2))
+	while (i < player_data->num_rays)
 	{
-		ft_wall_hit(cast);
-		dda(mlx, player_data->player->x, player_data->player->y, cast->wall_hit->x, cast->wall_hit->y);
-		cast->ray_angle += player_data->field_of_view / player_data->num_rays;
 		cast->ray_angle = ft_normalize_angle(cast->ray_angle);
-		i += 0.5;
+		ft_wall_hit(cast);
+		dda(mlx, player_data->player->x, player_data->player->y, cast->wall_hit->x, cast->wall_hit->y, cast);
+		cast->ray_angle += player_data->field_of_view / player_data->num_rays;
+		i += 1;
 	}
 }
 
@@ -111,19 +109,29 @@ void	ft_wall_hit(t_casting *cast)
 	double	h_distance;
 	double	v_distance;
 
+	cast->h_found_wall = 0;
+	cast->v_found_wall = 0;
 	ft_H_intersection(cast);
 	ft_V_intersection(cast);
-	v_distance = ft_cord_distance(cast->player, cast->v_insec);
-	h_distance = ft_cord_distance(cast->player, cast->h_insec);
-	if (h_distance < v_distance)
+	if (cast->h_found_wall)
+		h_distance = ft_cord_distance(cast->player, cast->h_insec);
+	else
+		h_distance = INT_MAX;
+	if (cast->v_found_wall)
+		v_distance = ft_cord_distance(cast->player, cast->v_insec);
+	else
+		v_distance = INT_MAX;
+	if (h_distance <= v_distance)
 	{
 		ft_init_cord(cast->wall_hit, cast->h_insec->x, cast->h_insec->y);
-		printf("Horizontal chosed\n");
+		cast->h_found_wall = 1;
+		cast->v_found_wall = 0;
 	}
 	else
 	{
 		ft_init_cord(cast->wall_hit, cast->v_insec->x, cast->v_insec->y);
-		printf("Vertical chosed\n");
+		cast->h_found_wall = 0;
+		cast->v_found_wall = 1;
 	}
 }
 
@@ -139,17 +147,17 @@ void	ft_V_intersection(t_casting *cast)
 		+ (TILE_SIZE * cast->ray_right);
 	cast->y_first = cast->player->y
 		+ (cast->x_first - cast->player->x) * tan(cast->ray_angle);
-	if (cast->ray_left)
-		cast->x_first--;
 	ft_init_cord(cast->v_insec, cast->x_first, cast->y_first);
 	while (cast->v_insec->y >= 0 && cast->v_insec->y < cast->height
 		&& cast->v_insec->x >= 0 && cast->v_insec->x < cast->width)
 	{
-		printf("V= (%c,x=%d,y=%d)\n",cast->map[cast->v_insec->y / TILE_SIZE]
-			[cast->v_insec->x / TILE_SIZE],cast->v_insec->x ,cast->v_insec->y);
-		if (cast->map[cast->v_insec->y / TILE_SIZE]
-			[cast->v_insec->x / TILE_SIZE] == '1')
+		cast->x_index = (int)((cast->v_insec->x + cast->ray_left) / TILE_SIZE);
+		cast->y_index = (int)(cast->v_insec->y / TILE_SIZE);
+		if (cast->map[cast->y_index][cast->x_index] == '1')
+		{
+			cast->v_found_wall = 1;
 			break ;
+		}
 		cast->v_insec->x += cast->x_step;
 		cast->v_insec->y += cast->y_step;
 	}
@@ -158,26 +166,26 @@ void	ft_V_intersection(t_casting *cast)
 void	ft_H_intersection(t_casting *cast)
 {
 	ft_ray_directions(cast);
-	cast->x_step = TILE_SIZE / tan(cast->ray_angle);
-	if ((cast->ray_left && cast->x_step > 0)
-		|| (cast->ray_right && cast->x_step < 0))
-		cast->x_step *= -1;
-	cast->y_step = (TILE_SIZE * cast->ray_up) + (TILE_SIZE * cast->ray_down);
 	cast->y_first = floor(cast->player->y / TILE_SIZE) * TILE_SIZE
 		+ (TILE_SIZE * cast->ray_down);
 	cast->x_first = cast->player->x
 		+ (cast->y_first - cast->player->y) / tan(cast->ray_angle);
-	if (cast->ray_up)
-		cast->y_first--;
+	cast->y_step = (TILE_SIZE * cast->ray_up) + (TILE_SIZE * cast->ray_down);
+	cast->x_step = TILE_SIZE / tan(cast->ray_angle);
+	if ((cast->ray_left && cast->x_step > 0)
+		|| (cast->ray_right && cast->x_step < 0))
+		cast->x_step *= -1;
 	ft_init_cord(cast->h_insec, cast->x_first, cast->y_first);
 	while (cast->h_insec->y >= 0 && cast->h_insec->y < cast->height
 		&& cast->h_insec->x >= 0 && cast->h_insec->x < cast->width)
 	{
-		printf("H= (%c,x=%d,y=%d)\n",cast->map[cast->h_insec->y / TILE_SIZE]
-			[cast->h_insec->x / TILE_SIZE],cast->h_insec->x ,cast->h_insec->y);
-		if (cast->map[cast->h_insec->y / TILE_SIZE]
-			[cast->h_insec->x / TILE_SIZE] == '1')
+		cast->x_index = cast->h_insec->x / TILE_SIZE;
+		cast->y_index = (cast->h_insec->y + cast->ray_up) / TILE_SIZE;
+		if (cast->map[cast->y_index][cast->x_index] == '1')
+		{
+			cast->h_found_wall = 1;
 			break ;
+		}
 		cast->h_insec->x += cast->x_step;
 		cast->h_insec->y += cast->y_step;
 	}
@@ -206,7 +214,7 @@ int	ft_abs(int value)
 
 double	ft_normalize_angle(double angle)
 {
-	angle = fmod(angle, (2 * M_PI));
+	angle = remainder(angle, (2 * M_PI));
 	if (angle < 0)
 		angle += (2 * M_PI);
 	return (angle);

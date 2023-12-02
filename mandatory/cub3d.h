@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/25 23:05:48 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:51:21 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include <unistd.h>
+# include <limits.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -27,8 +28,8 @@
 
 typedef struct s_cord
 {
-	int	x;
-	int	y;
+	double	x;
+	double	y;
 
 }	t_cord;
 
@@ -107,12 +108,16 @@ typedef struct s_casting
 	int			ray_down;
 	int			ray_right;
 	int			ray_left;
-	double			x_step;
-	double			y_step;
-	double			x_first;
-	double			y_first;
+	double		x_step;
+	double		y_step;
+	double		x_first;
+	double		y_first;
 	int			width;
 	int			height;
+	int			x_index;
+	int			y_index;
+	int			h_found_wall;
+	int			v_found_wall;
 }	t_casting;
 
 // parse_map.c
@@ -156,7 +161,7 @@ void	ft_move_sides(t_mlx *mlx, int pixel);
 void	ft_hooks(void *param);
 void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding);
 void	bresenhams_line(t_mlx *mlx, int x1, int y1, int x2, int y2);
-void	dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1);
+void	dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1, t_casting *cast);
 void	ft_esc(void *param);
 void	ft_cast_rays(t_mlx	*mlx);
 double	ft_normalize_angle(double angle);
