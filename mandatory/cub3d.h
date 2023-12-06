@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/01 15:51:21 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:22:06 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@
 
 # define TILE_SIZE 64
 # define FOV_ANGLE 60
+# define SCALE 0.25
 
 typedef struct s_cord
 {
 	double	x;
 	double	y;
-
 }	t_cord;
 
 typedef struct s_check
@@ -104,18 +104,20 @@ typedef struct s_casting
 	t_cord		v_insec[1];
 	t_cord		wall_hit[1];
 	double		ray_angle;
-	int			ray_up;
-	int			ray_down;
-	int			ray_right;
-	int			ray_left;
 	double		x_step;
 	double		y_step;
 	double		x_first;
 	double		y_first;
-	int			width;
-	int			height;
+	double		h_distance;
+	double		v_distance;
 	int			x_index;
 	int			y_index;
+	int			ray_up;
+	int			ray_down;
+	int			ray_right;
+	int			ray_left;
+	int			width;
+	int			height;
 	int			h_found_wall;
 	int			v_found_wall;
 }	t_casting;
@@ -161,14 +163,14 @@ void	ft_move_sides(t_mlx *mlx, int pixel);
 void	ft_hooks(void *param);
 void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding);
 void	bresenhams_line(t_mlx *mlx, int x1, int y1, int x2, int y2);
-void	dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1, t_casting *cast);
+void	dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1, int color);
 void	ft_esc(void *param);
 void	ft_cast_rays(t_mlx	*mlx);
 double	ft_normalize_angle(double angle);
 int		ft_abs(int value);
 void	ft_H_intersection(t_casting *cast);
 void	ft_V_intersection(t_casting *cast);
-void	ft_wall_hit(t_casting *cast);
+void	ft_wall_hit(t_mlx *mlx, t_casting *cast);
 double	ft_cord_distance(t_cord *p1, t_cord *p2);
 void	ft_ray_directions(t_casting *cast);
 
