@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   graphics.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 14:45:21 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/11 18:37:35 by ael-khel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "MLX42/include/MLX42/MLX42.h"
 #include "cub3d.h"
 #include <math.h>
@@ -109,48 +97,51 @@ void	ft_square(t_mlx *mlx, t_cord *square, int color)
 }
 
 
-void draw_one_line(int x, int y, float d, t_mlx *mlx)
-{
-	uint32_t px, py;
+// void draw_one_line(int x, int y, float d, t_mlx *mlx)
+// {
+// 	uint32_t px, py;
 
-	px = x;
-	py = y;
-	float max = py + d;
-	while (py < max)
-	{
-		printf("%f,%d\n", max, py);
-		mlx_put_pixel(mlx->img, px, py, 0XFF0000FF);
-		py++;
-	}
-}
+// 	px = x;
+// 	py = y;
+// 	float max = py + d;
+// 	while (py < max)
+// 	{
+// 		printf("%f,%d\n", max, py);
+// 		mlx_put_pixel(mlx->img, px, py, 0XFF0000FF);
+// 		py++;
+// 	}
+// }
 
 
 void	ft_cast_rays(t_mlx *mlx)
 {
 	t_player	*player_data;
-	t_ray		rays[player_data->num_rays];
 	t_casting	cast[1];
 	int			i;
 
 	player_data = mlx->player_data;
-	rays[i].cast->width = mlx->map_data->map_width * TILE_SIZE;
-	rays[i].cast->height = mlx->map_data->map_height * TILE_SIZE;
-	rays[i].cast->map = mlx->map_data->map;
-	rays[i].cast->player = player_data->player;
-	rays[i].cast->ray_angle = player_data->rotation_angle
+	cast->width = mlx->map_data->map_width * TILE_SIZE;
+	cast->height = mlx->map_data->map_height * TILE_SIZE;
+	cast->map = mlx->map_data->map;
+	cast->player = player_data->player;
+	cast->ray_angle = player_data->rotation_angle
 		- player_data->field_of_view / 2;
 	i = 0;
 	while (i < player_data->num_rays)
 	{
-		cast->ray_angle = ft_normalize_angle(cast->ray_angle);
+		cast->ray_angle = ft_normalize_angle(cast->ray_angle - player_data->rotation_angle);
 		ft_wall_hit(mlx, cast);
+		cast->ray_angle += player_data->field_of_view / player_data->num_rays;
+		++i;
 
 		// double	dis_projection;
 		// double	projected_wall_height;
+		// // double	prep_distance;
 		// int		wall_strip_height;
 		// int		wall_top_pixel;
 		// int		wall_bottom_pixel;
 
+		// // prep_distance = cast->ray_distance * cos(cast->ray_angle - player_data->rotation_angle);
 		// dis_projection = (cast->width / 2) / tan(FOV_ANGLE / 2);
 		// projected_wall_height = (TILE_SIZE / cast->ray_distance) * dis_projection;
 		// wall_strip_height = (int)projected_wall_height;
@@ -163,9 +154,7 @@ void	ft_cast_rays(t_mlx *mlx)
 		// {
 		// 	mlx_put_pixel(mlx->img, i, y, 0xff4578ff);
 		// }
-		// memset(mlx->img->pixels, 255, mlx->img->width * mlx->img->height * 4);
-		i += 1;
-		rays[i].ray_angle += player_data->field_of_view / player_data->num_rays;
+		// memset(mlx->img->pixels, 16,200);
 	}
 }
 

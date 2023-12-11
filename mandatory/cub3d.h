@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/06 19:22:06 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:31:22 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct s_player
 	double		ray_angle;
 	double		field_of_view;
 	double		wall_strip_width;
-	double		num_rays;
+	int			num_rays;
 }	t_player;
 
 typedef struct s_mlx
@@ -104,6 +104,7 @@ typedef struct s_casting
 	t_cord		v_insec[1];
 	t_cord		wall_hit[1];
 	double		ray_angle;
+	double		ray_distance;
 	double		x_step;
 	double		y_step;
 	double		x_first;
@@ -121,6 +122,18 @@ typedef struct s_casting
 	int			h_found_wall;
 	int			v_found_wall;
 }	t_casting;
+
+typedef struct s_ray
+{
+	t_casting	cast[1];
+	t_cord		wall_hit[1];
+	double		ray_angle;
+	double		ray_distance;
+}	t_ray;
+
+
+
+
 
 // parse_map.c
 void	ft_check_arg(int ac, char *av);
