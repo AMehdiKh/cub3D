@@ -6,16 +6,18 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:45:21 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/11 18:37:35 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/14 04:49:00 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MLX42/include/MLX42/MLX42.h"
 #include "cub3d.h"
 #include <math.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+
 
 void	ft_graphics(t_map *map_data)
 {
@@ -24,7 +26,7 @@ void	ft_graphics(t_map *map_data)
 	ft_bzero(mlx, sizeof(mlx));
 	mlx->map_data = map_data;
 	ft_init_mlx(mlx, map_data->map_width, map_data->map_height);
-	ft_mini_map(mlx);
+	ft_render_map(mlx);
 	mlx_loop_hook(mlx->win, &ft_hooks, mlx);
 	mlx_close_hook(mlx->win, &ft_esc, mlx);
 	mlx_loop(mlx->win);
@@ -81,8 +83,8 @@ void	ft_mini_map(t_mlx *mlx)
 		++y;
 	}
 	ft_player_square(mlx, mlx->player_data->player, 0xd90429FF, 2);
-	ft_cast_rays(mlx);
 }
+
 
 void	ft_square(t_mlx *mlx, t_cord *square, int color)
 {
@@ -108,94 +110,113 @@ void	ft_square(t_mlx *mlx, t_cord *square, int color)
 	}
 }
 
-
-void draw_one_line(int x, int y, float d, t_mlx *mlx)
+void	ft_paint_ceiling_floor(t_mlx *mlx)
 {
-	uint32_t px, py;
+	ft_paint_pixels(mlx->img->pixels, mlx->map_data->f_color, mlx->img->width * mlx->img->height);
+	ft_paint_pixels(mlx->img->pixels, mlx->map_data->c_color, mlx->img->width * (mlx->img->height / 2));
+}
 
-	px = x;
-	py = y;
-	float max = py + d;
-	while (py < max)
+void	ft_render_map(t_mlx	*mlx)
+{
+	t_ray	rays[mlx->player_data->num_rays];
+
+	ft_paint_ceiling_floor(mlx);
+	ft_cast_rays(mlx, rays);
+	ft_render_walls(mlx, rays);
+	ft_mini_map(mlx);
+	ft_draw_rays(mlx, rays);
+}
+
+void	ft_draw_rays(t_mlx *mlx, t_ray *rays)
+{
+	int	i;
+
+	i = 0;
+	while (i < mlx->player_data->num_rays)
 	{
-		printf("%f,%d\n", max, py);
-		mlx_put_pixel(mlx->img, px, py, 0XFF0000FF);
-		py++;
+		dda(mlx,
+		mlx->player_data->player->x * SCALE,
+		mlx->player_data->player->y * SCALE,
+		rays[i].wall_hit->x * SCALE,
+		rays[i].wall_hit->y * SCALE,
+		rays[i].color);
+		++i;
 	}
 }
 
-
-void	ft_cast_rays(t_mlx *mlx)
+void	ft_cast_rays(t_mlx *mlx, t_ray *rays)
 {
-	t_player	*player_data;
-	t_ray		rays[player_data->num_rays];
 	t_casting	cast[1];
+	t_player	*player_data;
 	int			i;
 
 	player_data = mlx->player_data;
-	rays[i].cast->width = mlx->map_data->map_width * TILE_SIZE;
-	rays[i].cast->height = mlx->map_data->map_height * TILE_SIZE;
-	rays[i].cast->map = mlx->map_data->map;
-	rays[i].cast->player = player_data->player;
-	rays[i].cast->ray_angle = player_data->rotation_angle
+	cast->width = mlx->map_data->map_width * TILE_SIZE;
+	cast->height = mlx->map_data->map_height * TILE_SIZE;
+	cast->map = mlx->map_data->map;
+	cast->player = player_data->player;
+	cast->ray_angle = player_data->rotation_angle
 		- player_data->field_of_view / 2;
 	i = 0;
 	while (i < player_data->num_rays)
 	{
-		cast->ray_angle = ft_normalize_angle(cast->ray_angle);
-		ft_wall_hit(mlx, cast);
-
-		// double	dis_projection;
-		// double	projected_wall_height;
-		// int		wall_strip_height;
-		// int		wall_top_pixel;
-		// int		wall_bottom_pixel;
-
-		// dis_projection = (cast->width / 2) / tan(FOV_ANGLE / 2);
-		// projected_wall_height = (TILE_SIZE / cast->ray_distance) * dis_projection;
-		// wall_strip_height = (int)projected_wall_height;
-		// wall_top_pixel = (cast->height / 2) - (wall_strip_height / 2);
-		// wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel;
-		// wall_bottom_pixel = (cast->height / 2) - (wall_strip_height / 2);
-		// wall_bottom_pixel = wall_top_pixel > cast->height ? cast->height : wall_bottom_pixel;
-		// dda(mlx, i, wall_top_pixel, i, wall_bottom_pixel, 0xff4578ff);
-		// for (int y = wall_top_pixel; y < wall_bottom_pixel; y++)
-		// {
-		// 	mlx_put_pixel(mlx->img, i, y, 0xff4578ff);
-		// }
-		// memset(mlx->img->pixels, 255, mlx->img->width * mlx->img->height * 4);
-		i += 1;
-		rays[i].ray_angle += player_data->field_of_view / player_data->num_rays;
+		rays[i].ray_angle = ft_normalize_angle(&cast->ray_angle);
+		ft_wall_hit((rays + i), cast);
+		cast->ray_angle += player_data->field_of_view / player_data->num_rays;
+		++i;
 	}
 }
 
-// void	ft_render_walls(t_mlx *mlx, t_casting *cast)
-// {
-// 	double	dis_projection;
-// 	double	wall_strip_height;
-// 	double	y;
-// 	double	x;
-
-// 	x = 0;
-// 	dis_projection = (cast->width / 2) / tan(field_of_view / 2);
-// 	wall_strip_height = (TILE_SIZE / cast->ray_distance) * dis_projection;
-// 	y = (cast->height / 2) - (wall_strip_height / 2);
-// 	while (y < wall_strip_height)
-// 	{
-// 		x = 0;
-// 		while (x < wall_strip_width)
-// 		{
-// 			mlx_put_pixel(mlx->img, x, y, 0xff4878ff);
-// 			++x;
-// 		}
-// 		++y;
-// 	}
-// }
-
-void	ft_wall_hit(t_mlx *mlx, t_casting *cast)
+void	ft_paint_pixels(uint8_t *pixels, unsigned color, size_t size)
 {
-	int	color;
+	size_t	i;
+	int		shift;
 
+	shift = 3;
+	i = 0;
+	while (i < size * BPP)
+	{
+		if (shift == -1)
+			shift = 3;
+		pixels[i] = (color >> (8 * shift)) & 0xFF;
+		--shift;
+		++i;
+	}
+}
+
+void	ft_render_walls(t_mlx *mlx, t_ray *rays)
+{
+	double	dis_projection;
+	double	projected_wall_height;
+	double	perp_dis;
+	int		wall_strip_height;
+	int		wall_top_pixel;
+	int		wall_bottom_pixel;
+	int		i;
+	
+	i = 0;
+	while (i < mlx->player_data->num_rays)
+	{
+		perp_dis = rays[i].ray_distance * cos(rays[i].ray_angle - mlx->player_data->rotation_angle);
+		dis_projection = (rays[i].width / 2) / tan(FOV_ANGLE / 2);
+		projected_wall_height = (TILE_SIZE / perp_dis) * dis_projection;
+		wall_strip_height = (int)projected_wall_height;
+		wall_top_pixel = (rays[i].height / 2) + (wall_strip_height / 2);
+		wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel;
+		wall_bottom_pixel = (rays[i].height / 2) - (wall_strip_height / 2);
+		wall_bottom_pixel = wall_top_pixel > rays[i].height ? rays[i].height : wall_bottom_pixel;
+
+		printf("[%d] top = %d, bottom = %d\n", i, wall_top_pixel, wall_bottom_pixel);
+		dda(mlx, i, wall_top_pixel, i, wall_bottom_pixel, rays[i].color);
+		// for (int y = wall_top_pixel; y < wall_bottom_pixel; y++)
+		// 	mlx_put_pixel(mlx->img, i, y, 0xff4578ff);
+		++i;
+	}
+
+}
+
+void	ft_wall_hit(t_ray *ray, t_casting *cast)
+{
 	ft_H_intersection(cast);
 	ft_V_intersection(cast);
 	if (cast->h_found_wall)
@@ -208,17 +229,22 @@ void	ft_wall_hit(t_mlx *mlx, t_casting *cast)
 		cast->v_distance = INT_MAX;
 	if (cast->h_distance <= cast->v_distance)
 	{
-		ft_init_cord(cast->wall_hit, cast->h_insec->x, cast->h_insec->y);
-		cast->ray_distance = cast->h_distance;
-		color = 0x48bfe3ff;
+		ft_init_cord(ray->wall_hit, cast->h_insec->x, cast->h_insec->y);
+		ray->ray_distance = cast->h_distance;
+		ray->h_ray = 1;
+		ray->v_ray = 0;
+		ray->color = 0x48bfe3ff;
 	}
 	else
 	{
-		ft_init_cord(cast->wall_hit, cast->v_insec->x, cast->v_insec->y);
-		cast->ray_distance = cast->v_distance;
-		color = 0xfb8500ff;
+		ft_init_cord(ray->wall_hit, cast->v_insec->x, cast->v_insec->y);
+		ray->ray_distance = cast->v_distance;
+		ray->h_ray = 0;
+		ray->v_ray = 1;
+		ray->color = 0xfb8500ff;
 	}
-	dda(mlx, SCALE * cast->player->x, SCALE * cast->player->y, SCALE * cast->wall_hit->x, SCALE * cast->wall_hit->y, color);
+	ray->width = cast->width;
+	ray->height = cast->height;
 }
 
 void	ft_V_intersection(t_casting *cast)
@@ -254,7 +280,7 @@ void	ft_H_intersection(t_casting *cast)
 {
 	cast->h_found_wall = 0;
 	ft_ray_directions(cast);
-	cast->y_first = floor(cast->player->y / TILE_SIZE) * TILE_SIZE + (cast->ray_up * 0.0001)
+	cast->y_first = floor(cast->player->y / TILE_SIZE) * TILE_SIZE
 		+ (TILE_SIZE * cast->ray_down);
 	cast->x_first = cast->player->x
 		+ (cast->y_first - cast->player->y) / tan(cast->ray_angle);
@@ -293,19 +319,12 @@ double	ft_cord_distance(t_cord *p1, t_cord *p2)
 	return (sqrt(pow(p2->x - p1->x, 2) + pow(p2->y - p1->y, 2)));
 }
 
-int	ft_abs(int value)
+double	ft_normalize_angle(double *angle)
 {
-	if (value < 0)
-		return (-value);
-	return (value);
-}
-
-double	ft_normalize_angle(double angle)
-{
-	angle = remainder(angle, (2 * M_PI));
-	if (angle < 0)
-		angle += (2 * M_PI);
-	return (angle);
+	*angle = remainder(*angle, (2 * M_PI));
+	if (*angle < 0)
+		*angle += (2 * M_PI);
+	return (*angle);
 }
 
 void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding)
@@ -374,7 +393,7 @@ void	ft_move_sides(t_mlx *mlx, int pixel)
 	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
 	{
 		mlx->player_data->player->x = x;
-		ft_mini_map(mlx);
+		ft_render_map(mlx);
 	}
 }
 
@@ -391,7 +410,7 @@ void	ft_move_straight(t_mlx *mlx, int pixel)
 	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
 	{
 		ft_init_cord(player_data->player, x, y);
-		ft_mini_map(mlx);
+		ft_render_map(mlx);
 	}
 	x = player_data->player->x;
 	y = (player_data->player->y + sin(player_data->rotation_angle)
@@ -399,7 +418,7 @@ void	ft_move_straight(t_mlx *mlx, int pixel)
 	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
 	{
 		ft_init_cord(player_data->player, x, y);
-		ft_mini_map(mlx);
+		ft_render_map(mlx);
 	}
 }
 
@@ -409,8 +428,8 @@ void	ft_turn(t_mlx *mlx, int pixel)
 
 	player_data = mlx->player_data;
 	player_data->rotation_angle += (pixel * player_data->rotation_speed);
-	player_data->rotation_angle = ft_normalize_angle(player_data->rotation_angle);
-	ft_mini_map(mlx);
+	ft_normalize_angle(&player_data->rotation_angle);
+	ft_render_map(mlx);
 }
 
 void	ft_init_cord(t_cord *cord, int x, int y)

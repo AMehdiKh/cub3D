@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/11 18:31:22 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/14 04:53:28 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include "LibFT/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
 
+# define WIDTH 960
+# define HEIGHT 680
+# define BPP 4
 # define TILE_SIZE 64
 # define FOV_ANGLE 60
 # define SCALE 0.25
@@ -44,8 +47,8 @@ typedef struct s_check
 	int		we_elem;
 	int		ea_elem;
 
-	int		f_elem;
-	int		c_elem;
+	unsigned int	f_elem;
+	unsigned int	c_elem;
 	int		comma_count;
 	int		digit_count;
 	int		digit;
@@ -98,13 +101,11 @@ typedef struct s_mlx
 
 typedef struct s_casting
 {
-	char		**map;
-	t_cord		*player;
 	t_cord		h_insec[1];
 	t_cord		v_insec[1];
-	t_cord		wall_hit[1];
+	t_cord		*player;
+	char		**map;
 	double		ray_angle;
-	double		ray_distance;
 	double		x_step;
 	double		y_step;
 	double		x_first;
@@ -125,10 +126,14 @@ typedef struct s_casting
 
 typedef struct s_ray
 {
-	t_casting	cast[1];
 	t_cord		wall_hit[1];
 	double		ray_angle;
 	double		ray_distance;
+	unsigned	color;
+	double		width;
+	double		height;
+	int			h_ray;
+	int			v_ray;
 }	t_ray;
 
 
@@ -178,13 +183,18 @@ void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding);
 void	bresenhams_line(t_mlx *mlx, int x1, int y1, int x2, int y2);
 void	dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1, int color);
 void	ft_esc(void *param);
-void	ft_cast_rays(t_mlx	*mlx);
-double	ft_normalize_angle(double angle);
+void	ft_cast_rays(t_mlx *mlx, t_ray *rays);
+double	ft_normalize_angle(double *angle);
 int		ft_abs(int value);
 void	ft_H_intersection(t_casting *cast);
 void	ft_V_intersection(t_casting *cast);
-void	ft_wall_hit(t_mlx *mlx, t_casting *cast);
+void	ft_wall_hit(t_ray *ray, t_casting *cast);
 double	ft_cord_distance(t_cord *p1, t_cord *p2);
 void	ft_ray_directions(t_casting *cast);
+void	ft_paint_pixels(uint8_t *pixels, unsigned color, size_t size);
+void	ft_render_map(t_mlx	*mlx);
+void	ft_draw_rays(t_mlx *mlx, t_ray *rays);
+void	ft_paint_ceiling_floor(t_mlx *mlx);
+void	ft_render_walls(t_mlx *mlx, t_ray *rays);
 
 #endif
