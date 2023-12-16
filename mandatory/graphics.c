@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 14:45:21 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/14 04:49:00 by ael-khel         ###   ########.fr       */
+/*   Created: 2023/TILE_SIZE/17 14:45:21 by ael-khel          #+#    #+#             */
+/*   Updated: 2023/12/16 17:59:36 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-
 
 void	ft_graphics(t_map *map_data)
 {
@@ -35,10 +34,10 @@ void	ft_graphics(t_map *map_data)
 
 void	ft_init_mlx(t_mlx *mlx, int x, int y)
 {
-	mlx->win = mlx_init(x * TILE_SIZE, y * TILE_SIZE, "Cub3D", false);
+	mlx->win = mlx_init(WIDTH, HEIGHT, "Cub3D", false);
 	if (!mlx->win)
 		ft_err("Error: MinilibX initialization failed", mlx->map_data);
-	mlx->img = mlx_new_image(mlx->win, x * TILE_SIZE, y * TILE_SIZE);
+	mlx->img = mlx_new_image(mlx->win, WIDTH, HEIGHT);
 	if (!mlx->img)
 	{
 		mlx_terminate(mlx->win);
@@ -55,7 +54,7 @@ void	ft_init_mlx(t_mlx *mlx, int x, int y)
 	mlx->player_data->move_speed = 4;
 	mlx->player_data->field_of_view = 60 * (M_PI / 180);
 	mlx->player_data->wall_strip_width = 1;
-	mlx->player_data->num_rays = (x * TILE_SIZE)
+	mlx->player_data->num_rays = WIDTH
 		/ mlx->player_data->wall_strip_width;
 }
 
@@ -84,7 +83,6 @@ void	ft_mini_map(t_mlx *mlx)
 	}
 	ft_player_square(mlx, mlx->player_data->player, 0xd90429FF, 2);
 }
-
 
 void	ft_square(t_mlx *mlx, t_cord *square, int color)
 {
@@ -118,7 +116,7 @@ void	ft_paint_ceiling_floor(t_mlx *mlx)
 
 void	ft_render_map(t_mlx	*mlx)
 {
-	t_ray	rays[mlx->player_data->num_rays];
+	t_ray	rays[WIDTH];
 
 	ft_paint_ceiling_floor(mlx);
 	ft_cast_rays(mlx, rays);
@@ -197,23 +195,40 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 	i = 0;
 	while (i < mlx->player_data->num_rays)
 	{
-		perp_dis = rays[i].ray_distance * cos(rays[i].ray_angle - mlx->player_data->rotation_angle);
-		dis_projection = (rays[i].width / 2) / tan(FOV_ANGLE / 2);
-		projected_wall_height = (TILE_SIZE / perp_dis) * dis_projection;
+		rays[i].ray_distance *= cos(rays[i].ray_angle - mlx->player_data->rotation_angle);
+		dis_projection = (WIDTH / 2) / tan(FOV_ANGLE / 2);
+		projected_wall_height = (TILE_SIZE / rays[i].ray_distance) * dis_projection;
 		wall_strip_height = (int)projected_wall_height;
-		wall_top_pixel = (rays[i].height / 2) + (wall_strip_height / 2);
+		wall_top_pixel = (HEIGHT / 2) + (wall_strip_height / 2);
 		wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel;
-		wall_bottom_pixel = (rays[i].height / 2) - (wall_strip_height / 2);
-		wall_bottom_pixel = wall_top_pixel > rays[i].height ? rays[i].height : wall_bottom_pixel;
-
+		wall_bottom_pixel = (HEIGHT / 2) - (wall_strip_height / 2);
+		wall_bottom_pixel = wall_bottom_pixel > HEIGHT ? HEIGHT : wall_bottom_pixel;
 		printf("[%d] top = %d, bottom = %d\n", i, wall_top_pixel, wall_bottom_pixel);
 		dda(mlx, i, wall_top_pixel, i, wall_bottom_pixel, rays[i].color);
 		// for (int y = wall_top_pixel; y < wall_bottom_pixel; y++)
 		// 	mlx_put_pixel(mlx->img, i, y, 0xff4578ff);
 		++i;
 	}
-
 }
+
+// void	ft_draw_texture(int8_t pixels, int start, int end, int wall)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	int		shift;
+
+// 	i = (start * WIDTH) + (wall * BPP);
+// 	while (i < size * BPP)
+// 	{
+// 		j = 0;
+// 		while (j < BPP)
+// 		{
+// 			pixels[i + j] = ;
+// 			++j;
+// 		}
+// 		i += WIDTH * BPP;
+// 	}
+// }
 
 void	ft_wall_hit(t_ray *ray, t_casting *cast)
 {
@@ -271,8 +286,8 @@ void	ft_V_intersection(t_casting *cast)
 			cast->v_found_wall = 1;
 			break ;
 		}
-		cast->v_insec->x += cast->x_step;
 		cast->v_insec->y += cast->y_step;
+		cast->v_insec->x += cast->x_step;
 	}
 }
 

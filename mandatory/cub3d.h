@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/14 04:53:28 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:06:03 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include "LibFT/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
 
-# define WIDTH 960
-# define HEIGHT 680
+# define WIDTH 2240
+# define HEIGHT 960
 # define BPP 4
 # define TILE_SIZE 64
 # define FOV_ANGLE 60
@@ -38,22 +38,22 @@ typedef struct s_cord
 
 typedef struct s_check
 {
-	char	**elem;
+	char		**elem;
 
-	int		line_count;
+	int			line_count;
 
-	int		no_elem;
-	int		so_elem;
-	int		we_elem;
-	int		ea_elem;
+	int			no_elem;
+	int			so_elem;
+	int			we_elem;
+	int			ea_elem;
 
-	unsigned int	f_elem;
-	unsigned int	c_elem;
-	int		comma_count;
-	int		digit_count;
-	int		digit;
+	unsigned	f_elem;
+	unsigned	c_elem;
+	int			comma_count;
+	int			digit_count;
+	int			digit;
 
-	int		num_elem;
+	int			num_elem;
 
 }	t_check;
 
@@ -135,10 +135,6 @@ typedef struct s_ray
 	int			h_ray;
 	int			v_ray;
 }	t_ray;
-
-
-
-
 
 // parse_map.c
 void	ft_check_arg(int ac, char *av);
