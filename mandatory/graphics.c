@@ -52,20 +52,44 @@ void	ft_init_mlx(t_mlx *mlx, int x, int y)
 	mlx->player_data->rotation_angle = ft_character_direction(mlx->map_data);
 	mlx->player_data->rotation_speed = 2 * (M_PI / 180);
 	mlx->player_data->move_speed = 4;
-	mlx->player_data->field_of_view = 60 * (M_PI / 180);
+	mlx->player_data->field_of_view = FOV_ANGLE * (M_PI / 180);
 	mlx->player_data->wall_strip_width = 1;
 	mlx->player_data->num_rays = WIDTH
 		/ mlx->player_data->wall_strip_width;
 }
 
+
+int	ft_size_mini_map(t_map	*map_data)
+{
+	int	width_limit;
+	int	height_limit;
+	int	tile_size;
+
+	tile_size = 64;
+	width_limit = WIDTH / 8;
+	height_limit = HEIGHT / 8;
+	while (tile_size > 4)
+	{
+		if (map_data->map_width * tile_size < width_limit
+			&& map_data->map_height * tile_size < height_limit)
+			return (tile_size);
+		--tile_size;
+	}
+	return (-1);
+}
 void	ft_mini_map(t_mlx *mlx)
 {
 	t_map	*map_data;
 	t_cord	square[1];
+	int		tile_size;
 	int		y;
 	int		x;
 
 	map_data = mlx->map_data;
+	tile_size = 0;
+	// ft_size_mini_map(map_data);
+	// if (tile_size < 0)
+	// 	exit(1);
 	y = 0;
 	while (map_data->map[y])
 	{
@@ -74,9 +98,9 @@ void	ft_mini_map(t_mlx *mlx)
 		{
 			ft_init_cord(square, x * TILE_SIZE, y * TILE_SIZE);
 			if (map_data->map[y][x] == '1')
-				ft_square(mlx, square, 0x772f1aff);
+				ft_square(mlx, square, tile_size, 0x772f1aff);
 			else
-				ft_square(mlx, square, 0x55a630ff);
+				ft_square(mlx, square, tile_size, 0x55a630ff);
 			++x;
 		}
 		++y;
@@ -84,7 +108,7 @@ void	ft_mini_map(t_mlx *mlx)
 	ft_player_square(mlx, mlx->player_data->player, 0xd90429FF, 2);
 }
 
-void	ft_square(t_mlx *mlx, t_cord *square, int color)
+void	ft_square(t_mlx *mlx, t_cord *square, int tile_size, int color)
 {
 	int	x_start;
 	int	y_start;
@@ -121,8 +145,8 @@ void	ft_render_map(t_mlx	*mlx)
 	ft_paint_ceiling_floor(mlx);
 	ft_cast_rays(mlx, rays);
 	ft_render_walls(mlx, rays);
-	ft_mini_map(mlx);
-	ft_draw_rays(mlx, rays);
+	// ft_mini_map(mlx);
+	// ft_draw_rays(mlx, rays);
 }
 
 void	ft_draw_rays(t_mlx *mlx, t_ray *rays)
@@ -196,13 +220,18 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 	while (i < mlx->player_data->num_rays)
 	{
 		rays[i].ray_distance *= cos(rays[i].ray_angle - mlx->player_data->rotation_angle);
-		dis_projection = (WIDTH / 2) / tan(FOV_ANGLE / 2);
+		// dis_projection = (WIDTH / 2) / tan((FOV_ANGLE / 2) * (M_PI / 180));
+		dis_projection = (WIDTH / 2) / tan(mlx->player_data->field_of_view / 2);
 		projected_wall_height = (TILE_SIZE / rays[i].ray_distance) * dis_projection;
 		wall_strip_height = (int)projected_wall_height;
 		wall_top_pixel = (HEIGHT / 2) + (wall_strip_height / 2);
+		wall_top_pixel = wall_top_pixel > HEIGHT ? HEIGHT : wall_top_pixel;
 		wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel;
+
 		wall_bottom_pixel = (HEIGHT / 2) - (wall_strip_height / 2);
+		wall_bottom_pixel = wall_bottom_pixel < 0 ? 0 : wall_bottom_pixel;
 		wall_bottom_pixel = wall_bottom_pixel > HEIGHT ? HEIGHT : wall_bottom_pixel;
+		// wall_bottom_pixel = wall_bottom_pixel > HEIGHT ? HEIGHT : wall_bottom_pixel;
 		printf("[%d] top = %d, bottom = %d\n", i, wall_top_pixel, wall_bottom_pixel);
 		dda(mlx, i, wall_top_pixel, i, wall_bottom_pixel, rays[i].color);
 		// for (int y = wall_top_pixel; y < wall_bottom_pixel; y++)
@@ -215,10 +244,12 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 // {
 // 	size_t	i;
 // 	size_t	j;
+// 	int		count;
 // 	int		shift;
 
-// 	i = (start * WIDTH) + (wall * BPP);
-// 	while (i < size * BPP)
+// 	count = 0;
+// 	i = (start * WIDTH * BPP) + (wall * BPP);
+// 	while (count < end - start)
 // 	{
 // 		j = 0;
 // 		while (j < BPP)
@@ -227,6 +258,7 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 // 			++j;
 // 		}
 // 		i += WIDTH * BPP;
+// 		++count;
 // 	}
 // }
 
@@ -447,7 +479,7 @@ void	ft_turn(t_mlx *mlx, int pixel)
 	ft_render_map(mlx);
 }
 
-void	ft_init_cord(t_cord *cord, int x, int y)
+void	ft_init_cord(t_cord *cord, double x, double y)
 {
 	cord->x = x;
 	cord->y = y;

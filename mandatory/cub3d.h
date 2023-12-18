@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/16 18:06:03 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/18 06:05:33 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@
 # include "LibFT/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
 
-# define WIDTH 2240
+// # define WIDTH 2240
+# define WIDTH 1800
 # define HEIGHT 960
 # define BPP 4
 # define TILE_SIZE 64
-# define FOV_ANGLE 60
+# define FOV_ANGLE 75
 # define SCALE 0.25
 
 typedef struct s_cord
@@ -164,11 +165,10 @@ void	ft_destroy_map_data(t_map *map_data);
 void	ft_graphics(t_map *map_data);
 void	ft_init_mlx(t_mlx *mlx, int x, int y);
 void	ft_mini_map(t_mlx *mlx);
-void	ft_square(t_mlx *mlx, t_cord *square, int color);
 void	ft_circle(t_mlx *mlx, int xc, int yc, int r, int color);
 void	ft_draw_pixels(t_mlx *mlx, int xc, int yc, int x, int y, int color);
 void	ft_isolate_content(t_map *map_data, int start);
-void	ft_init_cord(t_cord *cord, int x, int y);
+void	ft_init_cord(t_cord *cord, double x, double y);
 
 double	ft_character_direction(t_map *map_data);
 void	ft_turn(t_mlx *mlx, int pixel);
@@ -192,5 +192,7 @@ void	ft_render_map(t_mlx	*mlx);
 void	ft_draw_rays(t_mlx *mlx, t_ray *rays);
 void	ft_paint_ceiling_floor(t_mlx *mlx);
 void	ft_render_walls(t_mlx *mlx, t_ray *rays);
+void	ft_square(t_mlx *mlx, t_cord *square, int tile_size, int color);
+int	ft_size_mini_map(t_map	*map_data);
 
 #endif
