@@ -133,28 +133,6 @@ void	ft_cast_rays(t_mlx *mlx)
 		ft_wall_hit(mlx, cast);
 		cast->ray_angle += player_data->field_of_view / player_data->num_rays;
 		++i;
-
-		// double	dis_projection;
-		// double	projected_wall_height;
-		// // double	prep_distance;
-		// int		wall_strip_height;
-		// int		wall_top_pixel;
-		// int		wall_bottom_pixel;
-
-		// // prep_distance = cast->ray_distance * cos(cast->ray_angle - player_data->rotation_angle);
-		// dis_projection = (cast->width / 2) / tan(FOV_ANGLE / 2);
-		// projected_wall_height = (TILE_SIZE / cast->ray_distance) * dis_projection;
-		// wall_strip_height = (int)projected_wall_height;
-		// wall_top_pixel = (cast->height / 2) - (wall_strip_height / 2);
-		// wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel;
-		// wall_bottom_pixel = (cast->height / 2) - (wall_strip_height / 2);
-		// wall_bottom_pixel = wall_top_pixel > cast->height ? cast->height : wall_bottom_pixel;
-		// dda(mlx, i, wall_top_pixel, i, wall_bottom_pixel, 0xff4578ff);
-		// for (int y = wall_top_pixel; y < wall_bottom_pixel; y++)
-		// {
-		// 	mlx_put_pixel(mlx->img, i, y, 0xff4578ff);
-		// }
-		// memset(mlx->img->pixels, 16,200);
 	}
 }
 
@@ -402,7 +380,7 @@ void	ft_turn(t_mlx *mlx, int pixel)
 	ft_mini_map(mlx);
 }
 
-void	ft_init_cord(t_cord *cord, int x, int y)
+void	ft_init_cord(t_cord *cord, double x, double y)
 {
 	cord->x = x;
 	cord->y = y;
