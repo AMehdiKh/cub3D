@@ -427,41 +427,32 @@ void	ft_hooks(void *param)
 		ft_esc(mlx);
 }
 
-void	ft_move_sides(t_mlx *mlx, int pixel)
+void	ft_move_sides(t_mlx *mlx, float angle)
 {
-	int			x;
-	int			y;
+	t_cord cor;
 
-	x = (mlx->player_data->player->x + pixel * MOVE_SPEED);
-	y = (mlx->player_data->player->y);
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
+    cor.x = mlx->player_data->player->x + sin(mlx->player_data->rotation_angle) * (angle * MOVE_SPEED);
+    cor.y = mlx->player_data->player->y + cos(mlx->player_data->rotation_angle) * (angle * MOVE_SPEED);
+
+	if (ft_strchr("NEWS0", mlx->map_data->map[(int)cor.y / TILE_SIZE][(int)cor.x / TILE_SIZE]))
 	{
-		mlx->player_data->player->x = x;
+		mlx->player_data->player->x = cor.x;
+		mlx->player_data->player->y = cor.y;
 		ft_render_map(mlx);
 	}
 }
 
 void	ft_move_straight(t_mlx *mlx, int pixel)
 {
-	t_player	*player_data;
-	int			x;
-	int			y;
+	t_cord cor;
 
-	player_data = mlx->player_data;
-	x = (player_data->player->x + cos(player_data->rotation_angle)
-			* (pixel * MOVE_SPEED));
-	y = player_data->player->y;
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
+    cor.x = mlx->player_data->player->x + cos(mlx->player_data->rotation_angle) * (pixel * MOVE_SPEED);
+    cor.y = mlx->player_data->player->y + sin(mlx->player_data->rotation_angle) * (pixel * MOVE_SPEED);
+
+	if (ft_strchr("NEWS0", mlx->map_data->map[(int)cor.y / TILE_SIZE][(int)cor.x / TILE_SIZE]))
 	{
-		ft_init_cord(player_data->player, x, y);
-		ft_render_map(mlx);
-	}
-	x = player_data->player->x;
-	y = (player_data->player->y + sin(player_data->rotation_angle)
-			* (pixel * MOVE_SPEED));
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
-	{
-		ft_init_cord(player_data->player, x, y);
+		mlx->player_data->player->x = cor.x;
+		mlx->player_data->player->y = cor.y;
 		ft_render_map(mlx);
 	}
 }
