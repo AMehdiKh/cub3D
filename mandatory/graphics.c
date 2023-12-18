@@ -162,8 +162,8 @@ void	ft_render_map(t_mlx	*mlx)
 	ft_paint_ceiling_floor(mlx);
 	ft_cast_rays(mlx, rays);
 	ft_render_walls(mlx, rays);
-	// ft_mini_map(mlx);
-	// ft_draw_rays(mlx, rays);
+	ft_mini_map(mlx);
+	ft_draw_rays(mlx, rays);
 }
 
 void	ft_draw_rays(t_mlx *mlx, t_ray *rays)
@@ -238,13 +238,13 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 	{
 		rays[i].ray_distance *= cos(rays[i].ray_angle - mlx->player_data->rotation_angle);
 		dis_projection = (WIDTH / 2) / tan(mlx->player_data->field_of_view / 2);
-		projected_wall_height = (TILE_SIZE2 / rays[i].ray_distance) * dis_projection;
+		projected_wall_height = (TILE_SIZE / rays[i].ray_distance) * dis_projection;
 		wall_strip_height = (int)projected_wall_height;
-		wall_top_pixel = (HEIGHT / 2) + (wall_strip_height / 2);
+		wall_top_pixel = (HEIGHT / 2) - (wall_strip_height / 2);
 		wall_top_pixel = wall_top_pixel > HEIGHT ? HEIGHT : wall_top_pixel;
 		wall_top_pixel = wall_top_pixel < 0 ? 0 : wall_top_pixel;
 
-		wall_bottom_pixel = (HEIGHT / 2) - (wall_strip_height / 2);
+		wall_bottom_pixel = (HEIGHT / 2) + (wall_strip_height / 2);
 		wall_bottom_pixel = wall_bottom_pixel < 0 ? 0 : wall_bottom_pixel;
 		wall_bottom_pixel = wall_bottom_pixel > HEIGHT ? HEIGHT : wall_bottom_pixel;
 		// wall_bottom_pixel = wall_bottom_pixel > HEIGHT ? HEIGHT : wall_bottom_pixel;

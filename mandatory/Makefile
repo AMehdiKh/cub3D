@@ -6,7 +6,7 @@
 #    By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2023/12/17 22:05:18 by ael-khel         ###   ########.fr        #
+#    Updated: 2023/12/18 21:13:31 by ael-khel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ LIBMLX = MLX42/build/libmlx42.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm -fsanitize=address -static-libasan -o $@
+	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/ael-khel/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@
 
 $(LIBFT):
 	$(MAKE) -C LibFT

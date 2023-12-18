@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/18 09:05:02 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:25:28 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define WIDTH 1800
 # define HEIGHT 960
 # define BPP 4
-# define TILE_SIZE 32
-# define TILE_SIZE2 128
+# define TILE_SIZE 64
+// # define TILE_SIZE2 128
 # define FOV_ANGLE 75
 # define SCALE 0.25
 
