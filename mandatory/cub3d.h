@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/18 06:05:33 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/18 09:05:02 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,13 @@
 # include "MLX42/include/MLX42/MLX42.h"
 
 // # define WIDTH 2240
+# define MOVE_SPEED 5
+# define ROT_SPEED 2
 # define WIDTH 1800
 # define HEIGHT 960
 # define BPP 4
-# define TILE_SIZE 64
+# define TILE_SIZE 32
+# define TILE_SIZE2 128
 # define FOV_ANGLE 75
 # define SCALE 0.25
 
@@ -83,13 +86,10 @@ typedef struct s_map
 typedef struct s_player
 {
 	t_cord		*player;
-	int			move_speed;
 	double		rotation_speed;
 	double		rotation_angle;
 	double		ray_angle;
 	double		field_of_view;
-	double		wall_strip_width;
-	int			num_rays;
 }	t_player;
 
 typedef struct s_mlx

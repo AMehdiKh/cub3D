@@ -50,12 +50,8 @@ void	ft_init_mlx(t_mlx *mlx, int x, int y)
 	}
 	mlx->player_data->player = mlx->map_data->character;
 	mlx->player_data->rotation_angle = ft_character_direction(mlx->map_data);
-	mlx->player_data->rotation_speed = 2 * (M_PI / 180);
-	mlx->player_data->move_speed = 4;
+	mlx->player_data->rotation_speed = ROT_SPEED * (M_PI / 180);
 	mlx->player_data->field_of_view = FOV_ANGLE * (M_PI / 180);
-	mlx->player_data->wall_strip_width = 1;
-	mlx->player_data->num_rays = WIDTH
-		/ mlx->player_data->wall_strip_width;
 }
 
 
@@ -132,6 +128,27 @@ void	ft_square(t_mlx *mlx, t_cord *square, int tile_size, int color)
 	}
 }
 
+void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding)
+{
+	int	x_start;
+	int	y_start;
+	int	x_end;
+	int	y_end;
+
+	y_start = square->y * SCALE - padding;
+	y_end = square->y * SCALE + padding;
+	x_end = square->x * SCALE + padding;
+	while (y_start < y_end)
+	{
+		x_start = square->x * SCALE - padding;
+		while (x_start < x_end)
+		{
+			mlx_put_pixel(mlx->img, x_start, y_start, color);
+			++x_start;
+		}
+		++y_start;
+	}
+}
 void	ft_paint_ceiling_floor(t_mlx *mlx)
 {
 	ft_paint_pixels(mlx->img->pixels, mlx->map_data->f_color, mlx->img->width * mlx->img->height);
@@ -154,7 +171,7 @@ void	ft_draw_rays(t_mlx *mlx, t_ray *rays)
 	int	i;
 
 	i = 0;
-	while (i < mlx->player_data->num_rays)
+	while (i < WIDTH)
 	{
 		dda(mlx,
 		mlx->player_data->player->x * SCALE,
@@ -180,11 +197,11 @@ void	ft_cast_rays(t_mlx *mlx, t_ray *rays)
 	cast->ray_angle = player_data->rotation_angle
 		- player_data->field_of_view / 2;
 	i = 0;
-	while (i < player_data->num_rays)
+	while (i < WIDTH)
 	{
 		rays[i].ray_angle = ft_normalize_angle(&cast->ray_angle);
 		ft_wall_hit((rays + i), cast);
-		cast->ray_angle += player_data->field_of_view / player_data->num_rays;
+		cast->ray_angle += player_data->field_of_view / WIDTH;
 		++i;
 	}
 }
@@ -217,12 +234,11 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 	int		i;
 	
 	i = 0;
-	while (i < mlx->player_data->num_rays)
+	while (i < WIDTH)
 	{
 		rays[i].ray_distance *= cos(rays[i].ray_angle - mlx->player_data->rotation_angle);
-		// dis_projection = (WIDTH / 2) / tan((FOV_ANGLE / 2) * (M_PI / 180));
 		dis_projection = (WIDTH / 2) / tan(mlx->player_data->field_of_view / 2);
-		projected_wall_height = (TILE_SIZE / rays[i].ray_distance) * dis_projection;
+		projected_wall_height = (TILE_SIZE2 / rays[i].ray_distance) * dis_projection;
 		wall_strip_height = (int)projected_wall_height;
 		wall_top_pixel = (HEIGHT / 2) + (wall_strip_height / 2);
 		wall_top_pixel = wall_top_pixel > HEIGHT ? HEIGHT : wall_top_pixel;
@@ -234,6 +250,7 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 		// wall_bottom_pixel = wall_bottom_pixel > HEIGHT ? HEIGHT : wall_bottom_pixel;
 		printf("[%d] top = %d, bottom = %d\n", i, wall_top_pixel, wall_bottom_pixel);
 		dda(mlx, i, wall_top_pixel, i, wall_bottom_pixel, rays[i].color);
+
 		// for (int y = wall_top_pixel; y < wall_bottom_pixel; y++)
 		// 	mlx_put_pixel(mlx->img, i, y, 0xff4578ff);
 		++i;
@@ -374,27 +391,7 @@ double	ft_normalize_angle(double *angle)
 	return (*angle);
 }
 
-void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding)
-{
-	int	x_start;
-	int	y_start;
-	int	x_end;
-	int	y_end;
 
-	y_start = square->y * SCALE - padding;
-	y_end = square->y * SCALE + padding;
-	x_end = square->x * SCALE + padding;
-	while (y_start < y_end)
-	{
-		x_start = square->x * SCALE - padding;
-		while (x_start < x_end)
-		{
-			mlx_put_pixel(mlx->img, x_start, y_start, color);
-			++x_start;
-		}
-		++y_start;
-	}
-}
 
 double	ft_character_direction(t_map *map_data)
 {
@@ -435,7 +432,7 @@ void	ft_move_sides(t_mlx *mlx, int pixel)
 	int			x;
 	int			y;
 
-	x = (mlx->player_data->player->x + pixel * mlx->player_data->move_speed);
+	x = (mlx->player_data->player->x + pixel * MOVE_SPEED);
 	y = (mlx->player_data->player->y);
 	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
 	{
@@ -452,7 +449,7 @@ void	ft_move_straight(t_mlx *mlx, int pixel)
 
 	player_data = mlx->player_data;
 	x = (player_data->player->x + cos(player_data->rotation_angle)
-			* (pixel * player_data->move_speed));
+			* (pixel * MOVE_SPEED));
 	y = player_data->player->y;
 	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
 	{
@@ -461,7 +458,7 @@ void	ft_move_straight(t_mlx *mlx, int pixel)
 	}
 	x = player_data->player->x;
 	y = (player_data->player->y + sin(player_data->rotation_angle)
-			* (pixel * player_data->move_speed));
+			* (pixel * MOVE_SPEED));
 	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
 	{
 		ft_init_cord(player_data->player, x, y);
