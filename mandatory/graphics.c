@@ -416,9 +416,9 @@ void	ft_hooks(void *param)
 	if (mlx_is_key_down(mlx->win, MLX_KEY_S))
 		ft_move_straight(mlx, -1);
 	if (mlx_is_key_down(mlx->win, MLX_KEY_D))
-		ft_move_sides(mlx, 1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_A))
 		ft_move_sides(mlx, -1);
+	if (mlx_is_key_down(mlx->win, MLX_KEY_A))
+		ft_move_sides(mlx, 1);
 	if (mlx_is_key_down(mlx->win, MLX_KEY_RIGHT))
 		ft_turn(mlx, 1);
 	if (mlx_is_key_down(mlx->win, MLX_KEY_LEFT))
@@ -426,14 +426,20 @@ void	ft_hooks(void *param)
 	if (mlx_is_key_down(mlx->win, MLX_KEY_ESCAPE))
 		ft_esc(mlx);
 }
-
-void	ft_move_sides(t_mlx *mlx, float angle)
+void	ft_move_sides(t_mlx *mlx, int pixel)
 {
-	t_cord cor;
+	t_cord	cor;
 
-    cor.x = mlx->player_data->player->x + sin(mlx->player_data->rotation_angle) * (angle * MOVE_SPEED);
-    cor.y = mlx->player_data->player->y + cos(mlx->player_data->rotation_angle) * (angle * MOVE_SPEED);
-
+    cor.x = mlx->player_data->player->x + sin(mlx->player_data->rotation_angle) * (pixel * MOVE_SPEED);
+	cor.y = mlx->player_data->player->y;
+	if (ft_strchr("NEWS0", mlx->map_data->map[(int)cor.y / TILE_SIZE][(int)cor.x / TILE_SIZE]))
+	{
+		mlx->player_data->player->x = cor.x;
+		mlx->player_data->player->y = cor.y;
+		ft_render_map(mlx);
+	}
+	cor.x = mlx->player_data->player->x;
+    cor.y = mlx->player_data->player->y + cos(mlx->player_data->rotation_angle) * (pixel * MOVE_SPEED);
 	if (ft_strchr("NEWS0", mlx->map_data->map[(int)cor.y / TILE_SIZE][(int)cor.x / TILE_SIZE]))
 	{
 		mlx->player_data->player->x = cor.x;
@@ -444,18 +450,29 @@ void	ft_move_sides(t_mlx *mlx, float angle)
 
 void	ft_move_straight(t_mlx *mlx, int pixel)
 {
-	t_cord cor;
+	t_player	*player_data;
+	int			x;
+	int			y;
 
-    cor.x = mlx->player_data->player->x + cos(mlx->player_data->rotation_angle) * (pixel * MOVE_SPEED);
-    cor.y = mlx->player_data->player->y + sin(mlx->player_data->rotation_angle) * (pixel * MOVE_SPEED);
-
-	if (ft_strchr("NEWS0", mlx->map_data->map[(int)cor.y / TILE_SIZE][(int)cor.x / TILE_SIZE]))
+	player_data = mlx->player_data;
+	x = (player_data->player->x + cos(player_data->rotation_angle)
+			* (pixel * MOVE_SPEED));
+	y = player_data->player->y;
+	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
 	{
-		mlx->player_data->player->x = cor.x;
-		mlx->player_data->player->y = cor.y;
+		ft_init_cord(player_data->player, x, y);
+		ft_render_map(mlx);
+	}
+	x = player_data->player->x;
+	y = (player_data->player->y + sin(player_data->rotation_angle)
+			* (pixel * MOVE_SPEED));
+	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
+	{
+		ft_init_cord(player_data->player, x, y);
 		ft_render_map(mlx);
 	}
 }
+
 
 void	ft_turn(t_mlx *mlx, int pixel)
 {

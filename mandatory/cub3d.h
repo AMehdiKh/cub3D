@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/19 00:16:03 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/19 01:47:12 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,10 @@ typedef struct s_ray
 	double		height;
 	int			h_ray;
 	int			v_ray;
+	int			ray_up;
+	int			ray_down;
+	int			ray_right;
+	int			ray_left;
 }	t_ray;
 
 // parse_map.c
@@ -173,7 +177,7 @@ void	ft_init_cord(t_cord *cord, double x, double y);
 double	ft_character_direction(t_map *map_data);
 void	ft_turn(t_mlx *mlx, int pixel);
 void	ft_move_straight(t_mlx *mlx, int pixel);
-void	ft_move_sides(t_mlx *mlx, float angle);
+void	ft_move_sides(t_mlx *mlx, int pixel);
 void	ft_hooks(void *param);
 void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding);
 void	bresenhams_line(t_mlx *mlx, int x1, int y1, int x2, int y2);
