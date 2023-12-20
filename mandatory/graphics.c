@@ -5,18 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/TILE_SIZE/17 14:45:21 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/16 17:59:36 by ael-khel         ###   ########.fr       */
+/*   Created: 2023/12/20 13:31:10 by ael-khel          #+#    #+#             */
+/*   Updated: 2023/12/20 17:13:42 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "MLX42/include/MLX42/MLX42.h"
 #include "cub3d.h"
-#include <math.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 
 void	ft_graphics(t_map *map_data)
 {
@@ -54,6 +48,16 @@ void	ft_init_mlx(t_mlx *mlx, int x, int y)
 	mlx->player_data->field_of_view = FOV_ANGLE * (M_PI / 180);
 }
 
+void	ft_render_map(t_mlx	*mlx)
+{
+	t_ray	rays[WIDTH];
+
+	ft_paint_ceiling_floor(mlx);
+	ft_cast_rays(mlx, rays);
+	ft_render_walls(mlx, rays);
+	ft_mini_map(mlx);
+	ft_draw_rays(mlx, rays);
+}
 
 int	ft_size_mini_map(t_map	*map_data)
 {
@@ -155,57 +159,6 @@ void	ft_paint_ceiling_floor(t_mlx *mlx)
 	ft_paint_pixels(mlx->img->pixels, mlx->map_data->c_color, mlx->img->width * (mlx->img->height / 2));
 }
 
-void	ft_render_map(t_mlx	*mlx)
-{
-	t_ray	rays[WIDTH];
-
-	ft_paint_ceiling_floor(mlx);
-	ft_cast_rays(mlx, rays);
-	ft_render_walls(mlx, rays);
-	ft_mini_map(mlx);
-	ft_draw_rays(mlx, rays);
-}
-
-void	ft_draw_rays(t_mlx *mlx, t_ray *rays)
-{
-	int	i;
-
-	i = 0;
-	while (i < WIDTH)
-	{
-		dda(mlx,
-		mlx->player_data->player->x * SCALE,
-		mlx->player_data->player->y * SCALE,
-		rays[i].wall_hit->x * SCALE,
-		rays[i].wall_hit->y * SCALE,
-		rays[i].color);
-		++i;
-	}
-}
-
-void	ft_cast_rays(t_mlx *mlx, t_ray *rays)
-{
-	t_casting	cast[1];
-	t_player	*player_data;
-	int			i;
-
-	player_data = mlx->player_data;
-	cast->width = mlx->map_data->map_width * TILE_SIZE;
-	cast->height = mlx->map_data->map_height * TILE_SIZE;
-	cast->map = mlx->map_data->map;
-	cast->player = player_data->player;
-	cast->ray_angle = player_data->rotation_angle
-		- player_data->field_of_view / 2;
-	i = 0;
-	while (i < WIDTH)
-	{
-		rays[i].ray_angle = ft_normalize_angle(&cast->ray_angle);
-		ft_wall_hit((rays + i), cast);
-		cast->ray_angle += player_data->field_of_view / WIDTH;
-		++i;
-	}
-}
-
 void	ft_paint_pixels(uint8_t *pixels, unsigned color, size_t size)
 {
 	size_t	i;
@@ -279,105 +232,6 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 // 	}
 // }
 
-void	ft_wall_hit(t_ray *ray, t_casting *cast)
-{
-	ft_H_intersection(cast);
-	ft_V_intersection(cast);
-	if (cast->h_found_wall)
-		cast->h_distance = ft_cord_distance(cast->player, cast->h_insec);
-	else
-		cast->h_distance = INT_MAX;
-	if (cast->v_found_wall)
-		cast->v_distance = ft_cord_distance(cast->player, cast->v_insec);
-	else
-		cast->v_distance = INT_MAX;
-	if (cast->h_distance <= cast->v_distance)
-	{
-		ft_init_cord(ray->wall_hit, cast->h_insec->x, cast->h_insec->y);
-		ray->ray_distance = cast->h_distance;
-		ray->h_ray = 1;
-		ray->v_ray = 0;
-		ray->color = 0x48bfe3ff;
-	}
-	else
-	{
-		ft_init_cord(ray->wall_hit, cast->v_insec->x, cast->v_insec->y);
-		ray->ray_distance = cast->v_distance;
-		ray->h_ray = 0;
-		ray->v_ray = 1;
-		ray->color = 0xfb8500ff;
-	}
-	ray->width = cast->width;
-	ray->height = cast->height;
-}
-
-void	ft_V_intersection(t_casting *cast)
-{
-	cast->v_found_wall = 0;
-	ft_ray_directions(cast);
-	cast->x_first = floor(cast->player->x / TILE_SIZE) * TILE_SIZE
-		+ (TILE_SIZE * cast->ray_right);
-	cast->y_first = cast->player->y
-		+ (cast->x_first - cast->player->x) * tan(cast->ray_angle);
-	cast->y_step = TILE_SIZE * tan(cast->ray_angle);
-	if ((cast->ray_up && cast->y_step > 0)
-		|| (cast->ray_down && cast->y_step < 0))
-		cast->y_step *= -1;
-	cast->x_step = (TILE_SIZE * cast->ray_left) + (TILE_SIZE * cast->ray_right);
-	ft_init_cord(cast->v_insec, cast->x_first, cast->y_first);
-	while (cast->v_insec->y >= 0 && cast->v_insec->y < cast->height
-		&& cast->v_insec->x >= 0 && cast->v_insec->x < cast->width)
-	{
-		cast->x_index = floor((cast->v_insec->x + cast->ray_left) / TILE_SIZE);
-		cast->y_index = floor(cast->v_insec->y / TILE_SIZE);
-		if (cast->map[cast->y_index][cast->x_index] == '1')
-		{
-			cast->v_found_wall = 1;
-			break ;
-		}
-		cast->v_insec->y += cast->y_step;
-		cast->v_insec->x += cast->x_step;
-	}
-}
-
-void	ft_H_intersection(t_casting *cast)
-{
-	cast->h_found_wall = 0;
-	ft_ray_directions(cast);
-	cast->y_first = floor(cast->player->y / TILE_SIZE) * TILE_SIZE
-		+ (TILE_SIZE * cast->ray_down);
-	cast->x_first = cast->player->x
-		+ (cast->y_first - cast->player->y) / tan(cast->ray_angle);
-	cast->y_step = (TILE_SIZE * cast->ray_up) + (TILE_SIZE * cast->ray_down);
-	cast->x_step = TILE_SIZE / tan(cast->ray_angle);
-	if ((cast->ray_left && cast->x_step > 0)
-		|| (cast->ray_right && cast->x_step < 0))
-		cast->x_step *= -1;
-	ft_init_cord(cast->h_insec, cast->x_first, cast->y_first);
-	while (cast->h_insec->y >= 0 && cast->h_insec->y < cast->height
-		&& cast->h_insec->x >= 0 && cast->h_insec->x < cast->width)
-	{
-		cast->x_index = floor(cast->h_insec->x / TILE_SIZE);
-		cast->y_index = floor((cast->h_insec->y + cast->ray_up) / TILE_SIZE);
-		if (cast->map[cast->y_index][cast->x_index] == '1')
-		{
-			cast->h_found_wall = 1;
-			break ;
-		}
-		cast->h_insec->x += cast->x_step;
-		cast->h_insec->y += cast->y_step;
-	}
-}
-
-void	ft_ray_directions(t_casting *cast)
-{
-	cast->ray_down = cast->ray_angle > 0 && cast->ray_angle < M_PI;
-	cast->ray_up = !cast->ray_down * -1;
-	cast->ray_right = cast->ray_angle < 0.5 * M_PI
-		|| cast->ray_angle > 1.5 * M_PI;
-	cast->ray_left = !cast->ray_right * -1;
-}
-
 double	ft_cord_distance(t_cord *p1, t_cord *p2)
 {
 	return (sqrt(pow(p2->x - p1->x, 2) + pow(p2->y - p1->y, 2)));
@@ -391,8 +245,6 @@ double	ft_normalize_angle(double *angle)
 	return (*angle);
 }
 
-
-
 double	ft_character_direction(t_map *map_data)
 {
 	if (map_data->character_dire == 'N')
@@ -404,84 +256,6 @@ double	ft_character_direction(t_map *map_data)
 	else if (map_data->character_dire == 'E')
 		return (0);
 	return (0);
-}
-
-void	ft_hooks(void *param)
-{
-	t_mlx	*mlx;
-
-	mlx = param;
-	if (mlx_is_key_down(mlx->win, MLX_KEY_W))
-		ft_move_straight(mlx, 1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_S))
-		ft_move_straight(mlx, -1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_D))
-		ft_move_sides(mlx, -1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_A))
-		ft_move_sides(mlx, 1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_RIGHT))
-		ft_turn(mlx, 1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_LEFT))
-		ft_turn(mlx, -1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_ESCAPE))
-		ft_esc(mlx);
-}
-void	ft_move_sides(t_mlx *mlx, int pixel)
-{
-	t_cord	cor;
-
-    cor.x = mlx->player_data->player->x + sin(mlx->player_data->rotation_angle) * (pixel * MOVE_SPEED);
-	cor.y = mlx->player_data->player->y;
-	if (ft_strchr("NEWS0", mlx->map_data->map[(int)cor.y / TILE_SIZE][(int)cor.x / TILE_SIZE]))
-	{
-		mlx->player_data->player->x = cor.x;
-		mlx->player_data->player->y = cor.y;
-		ft_render_map(mlx);
-	}
-	cor.x = mlx->player_data->player->x;
-    cor.y = mlx->player_data->player->y + cos(mlx->player_data->rotation_angle) * (pixel * MOVE_SPEED);
-	if (ft_strchr("NEWS0", mlx->map_data->map[(int)cor.y / TILE_SIZE][(int)cor.x / TILE_SIZE]))
-	{
-		mlx->player_data->player->x = cor.x;
-		mlx->player_data->player->y = cor.y;
-		ft_render_map(mlx);
-	}
-}
-
-void	ft_move_straight(t_mlx *mlx, int pixel)
-{
-	t_player	*player_data;
-	int			x;
-	int			y;
-
-	player_data = mlx->player_data;
-	x = (player_data->player->x + cos(player_data->rotation_angle)
-			* (pixel * MOVE_SPEED));
-	y = player_data->player->y;
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
-	{
-		ft_init_cord(player_data->player, x, y);
-		ft_render_map(mlx);
-	}
-	x = player_data->player->x;
-	y = (player_data->player->y + sin(player_data->rotation_angle)
-			* (pixel * MOVE_SPEED));
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
-	{
-		ft_init_cord(player_data->player, x, y);
-		ft_render_map(mlx);
-	}
-}
-
-
-void	ft_turn(t_mlx *mlx, int pixel)
-{
-	t_player	*player_data;
-
-	player_data = mlx->player_data;
-	player_data->rotation_angle += (pixel * player_data->rotation_speed);
-	ft_normalize_angle(&player_data->rotation_angle);
-	ft_render_map(mlx);
 }
 
 void	ft_init_cord(t_cord *cord, double x, double y)

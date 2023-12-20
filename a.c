@@ -74,8 +74,8 @@ int main() {
 // 	while (ray_angle < player_data->rotation_angle + (player_data->field_of_view / 2))
 // 	{
 
-// 		// ft_V_intersection();
-// 		ft_H_intersection(mlx->map_data->map, player_data);
+// 		// ft_v_intersection();
+// 		ft_h_intersection(mlx->map_data->map, player_data);
 // 		// wall_hitft_nearest_point();
 // 		dda(mlx, player_data->player, wall_hit);
 // 		ray_angle += player_data->field_of_view / player_data->num_rays;
@@ -83,7 +83,7 @@ int main() {
 // 	}
 // }
 
-// void	ft_H_intersection(char **map, t_cord *player, double ray_angle)
+// void	ft_h_intersection(char **map, t_cord *player, double ray_angle)
 // {
 // 	t_cord	intersection[1];
 // 	int		x_step;

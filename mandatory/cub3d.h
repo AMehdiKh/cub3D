@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/19 01:47:12 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:19:35 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ typedef struct s_check
 	int			we_elem;
 	int			ea_elem;
 
-	unsigned	f_elem;
-	unsigned	c_elem;
+	uint32_t	f_elem;
+	uint32_t	c_elem;
 	int			comma_count;
 	int			digit_count;
 	int			digit;
@@ -130,9 +130,7 @@ typedef struct s_ray
 	t_cord		wall_hit[1];
 	double		ray_angle;
 	double		ray_distance;
-	unsigned	color;
-	double		width;
-	double		height;
+	uint32_t	color;
 	int			h_ray;
 	int			v_ray;
 	int			ray_up;
@@ -186,8 +184,8 @@ void	ft_esc(void *param);
 void	ft_cast_rays(t_mlx *mlx, t_ray *rays);
 double	ft_normalize_angle(double *angle);
 int		ft_abs(int value);
-void	ft_H_intersection(t_casting *cast);
-void	ft_V_intersection(t_casting *cast);
+void	ft_h_intersection(t_casting *cast);
+void	ft_v_intersection(t_casting *cast);
 void	ft_wall_hit(t_ray *ray, t_casting *cast);
 double	ft_cord_distance(t_cord *p1, t_cord *p2);
 void	ft_ray_directions(t_casting *cast);
@@ -197,6 +195,6 @@ void	ft_draw_rays(t_mlx *mlx, t_ray *rays);
 void	ft_paint_ceiling_floor(t_mlx *mlx);
 void	ft_render_walls(t_mlx *mlx, t_ray *rays);
 void	ft_square(t_mlx *mlx, t_cord *square, int tile_size, int color);
-int	ft_size_mini_map(t_map	*map_data);
+int		ft_size_mini_map(t_map	*map_data);
 
 #endif
