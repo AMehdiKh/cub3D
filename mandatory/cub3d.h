@@ -6,13 +6,14 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/21 18:21:04 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:36:56 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+#include <sys/_types/_size_t.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdlib.h>
@@ -119,8 +120,8 @@ typedef struct s_casting
 	double		y_first;
 	double		h_distance;
 	double		v_distance;
-	int			x_index;
-	int			y_index;
+	size_t		x_index;
+	size_t		y_index;
 	int			ray_up;
 	int			ray_down;
 	int			ray_right;

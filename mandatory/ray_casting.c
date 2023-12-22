@@ -6,10 +6,11 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 17:09:17 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/21 18:17:54 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:35:44 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "LibFT/libft.h"
 #include "cub3d.h"
 #include <stdio.h>
 
@@ -112,8 +113,8 @@ void	ft_h_intersection(t_casting *cast)
 	{
 		cast->x_index = floor(cast->h_insec->x / TILE_SIZE);
 		cast->y_index = floor((cast->h_insec->y + cast->ray_up) / TILE_SIZE);
-		printf("y = %d, x = %d\n", cast->y_index, cast->x_index);
-		if (cast->map[cast->y_index][cast->x_index] == '1')
+		printf("Ypixel = %F, Yindex = %d\nXpixel = %F, Xindex = %d\nwidth = %d, height = %d\n", cast->h_insec->y, cast->y_index, cast->h_insec->x, cast->x_index, cast->width, cast->height);
+	if (cast->x_index < ft_strlen(cast->map[cast->y_index]) && cast->map[cast->y_index][cast->x_index] == '1')
 		{
 			cast->h_found_wall = 1;
 			break ;
