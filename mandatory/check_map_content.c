@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 21:45:09 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/29 10:02:40 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:15:37 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void	ft_check_content(t_map *map_data, int start)
 			ft_check_walls(map_data, map_data->map, x, y);
 			++x;
 		}
-		if (map_data->map_width < x)
-			map_data->map_width = x;
+		if (map_data->map_width < x * TILE_SIZE)
+			map_data->map_width = x * TILE_SIZE ;
 		++y;
 	}
-	map_data->map_height = y;
+	map_data->map_height = y * TILE_SIZE;
 	if (!map_data->character_dire)
 		ft_err("[!] Error:The map has no player position.", map_data);
 }

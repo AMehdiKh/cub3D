@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ray_casting.c                                   :+:      :+:    :+:   */
+/*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 17:09:17 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/20 17:19:35 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/21 18:17:54 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <stdio.h>
 
 void	ft_cast_rays(t_mlx *mlx, t_ray *rays)
 {
@@ -19,8 +20,8 @@ void	ft_cast_rays(t_mlx *mlx, t_ray *rays)
 	int			i;
 
 	player_data = mlx->player_data;
-	cast->width = mlx->map_data->map_width * TILE_SIZE;
-	cast->height = mlx->map_data->map_height * TILE_SIZE;
+	cast->width = mlx->map_data->map_width;
+	cast->height = mlx->map_data->map_height;
 	cast->map = mlx->map_data->map;
 	cast->player = player_data->player;
 	cast->ray_angle = player_data->rotation_angle
@@ -51,34 +52,15 @@ void	ft_wall_hit(t_ray *ray, t_casting *cast)
 	{
 		ft_init_cord(ray->wall_hit, cast->h_insec->x, cast->h_insec->y);
 		ray->ray_distance = cast->h_distance;
-		ray->h_ray = 1;
-		ray->v_ray = 0;
+		ray->ray_type = H_RAY;
 		ray->color = 0x48bfe3ff;
 	}
 	else
 	{
 		ft_init_cord(ray->wall_hit, cast->v_insec->x, cast->v_insec->y);
 		ray->ray_distance = cast->v_distance;
-		ray->h_ray = 0;
-		ray->v_ray = 1;
+		ray->ray_type = V_RAY;
 		ray->color = 0xfb8500ff;
-	}
-}
-
-void	ft_draw_rays(t_mlx *mlx, t_ray *rays)
-{
-	int	i;
-
-	i = 0;
-	while (i < WIDTH)
-	{
-		dda(mlx,
-			mlx->player_data->player->x * SCALE,
-			mlx->player_data->player->y * SCALE,
-			rays[i].wall_hit->x * SCALE,
-			rays[i].wall_hit->y * SCALE,
-			rays[i].color);
-		++i;
 	}
 }
 
@@ -130,6 +112,7 @@ void	ft_h_intersection(t_casting *cast)
 	{
 		cast->x_index = floor(cast->h_insec->x / TILE_SIZE);
 		cast->y_index = floor((cast->h_insec->y + cast->ray_up) / TILE_SIZE);
+		printf("y = %d, x = %d\n", cast->y_index, cast->x_index);
 		if (cast->map[cast->y_index][cast->x_index] == '1')
 		{
 			cast->h_found_wall = 1;

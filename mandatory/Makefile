@@ -6,7 +6,7 @@
 #    By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2023/12/19 01:29:42 by ael-khel         ###   ########.fr        #
+#    Updated: 2023/12/21 17:40:51 by ael-khel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = cub3D
 ################################################################################
 OBJ_DIR = objs
 
-FILES = main parse_map check_directions check_rgb check_map_content utils graphics bresenham_line
+FILES = main parse_map check_directions check_rgb check_map_content utils graphics bresenham_line ray_casting mini_map player_movements render_walls
 
 SRCS = ${addsuffix .c, $(FILES)}
 
@@ -34,7 +34,7 @@ LIBMLX = MLX42/build/libmlx42.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@
+	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm -fsanitize=address -static-libasan -o $@
 
 $(LIBFT):
 	$(MAKE) -C LibFT
@@ -53,4 +53,4 @@ fclean: clean
 re: clean all
 
 # $(CC) $(OBJS) $(LIBFT) $(LIBMLX) -ldl -lglfw -pthread -lm -fsanitize=address -static-libasan -o $@
-# $(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/ael-khel/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@
+# $(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@

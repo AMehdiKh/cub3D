@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/20 17:19:35 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/21 18:21:04 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@
 # define WIDTH 1800
 # define HEIGHT 960
 # define BPP 4
-# define TILE_SIZE 64
-// # define TILE_SIZE2 128
-# define FOV_ANGLE 75
+# define TILE_SIZE 32
+# define FOV_ANGLE 60
 # define SCALE 0.25
+# define H_RAY 0
+# define V_RAY 1
 
 typedef struct s_cord
 {
@@ -94,10 +95,15 @@ typedef struct s_player
 
 typedef struct s_mlx
 {
-	mlx_image_t	*img;
-	mlx_t		*win;
-	t_map		*map_data;
-	t_player	player_data[1];
+	mlx_image_t		*img;
+	mlx_t			*win;
+	mlx_texture_t	*no_text;
+	mlx_texture_t	*so_text;
+	mlx_texture_t	*we_text;
+	mlx_texture_t	*ea_text;
+	t_map			*map_data;
+	t_player		player_data[1];
+	double			map_scale;
 }	t_mlx;
 
 typedef struct s_casting
@@ -127,16 +133,16 @@ typedef struct s_casting
 
 typedef struct s_ray
 {
-	t_cord		wall_hit[1];
-	double		ray_angle;
-	double		ray_distance;
-	uint32_t	color;
-	int			h_ray;
-	int			v_ray;
-	int			ray_up;
-	int			ray_down;
-	int			ray_right;
-	int			ray_left;
+	mlx_texture_t	*texture;
+	t_cord			wall_hit[1];
+	double			ray_angle;
+	double			ray_distance;
+	uint32_t		color;
+	int				ray_type;
+	int				ray_up;
+	int				ray_down;
+	int				ray_right;
+	int				ray_left;
 }	t_ray;
 
 // parse_map.c
@@ -165,9 +171,8 @@ void	ft_clear(void **ptr);
 void	ft_destroy_map_data(t_map *map_data);
 //graphics.c
 void	ft_graphics(t_map *map_data);
-void	ft_init_mlx(t_mlx *mlx, int x, int y);
+void	ft_init_mlx(t_mlx *mlx);
 void	ft_mini_map(t_mlx *mlx);
-void	ft_circle(t_mlx *mlx, int xc, int yc, int r, int color);
 void	ft_draw_pixels(t_mlx *mlx, int xc, int yc, int x, int y, int color);
 void	ft_isolate_content(t_map *map_data, int start);
 void	ft_init_cord(t_cord *cord, double x, double y);
@@ -194,7 +199,11 @@ void	ft_render_map(t_mlx	*mlx);
 void	ft_draw_rays(t_mlx *mlx, t_ray *rays);
 void	ft_paint_ceiling_floor(t_mlx *mlx);
 void	ft_render_walls(t_mlx *mlx, t_ray *rays);
-void	ft_square(t_mlx *mlx, t_cord *square, int tile_size, int color);
-int		ft_size_mini_map(t_map	*map_data);
+void	ft_square(t_mlx *mlx, t_cord *square, int color);
+void	ft_size_mini_map(t_mlx *mlx, t_map *map_data);
+void	ft_ray_texture(t_mlx *mlx, t_ray *ray);
+void	ft_open_textures(t_mlx *mlx);
+
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:20:45 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/20 15:31:17 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:39:41 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_move_straight(t_mlx *mlx, int pixel)
 	x = (player_data->player->x + cos(player_data->rotation_angle)
 			* (pixel * MOVE_SPEED));
 	y = player_data->player->y;
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
+	if (ft_strchr("NEWS0", mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)]))
 	{
 		ft_init_cord(player_data->player, x, y);
 		ft_render_map(mlx);
@@ -51,7 +51,7 @@ void	ft_move_straight(t_mlx *mlx, int pixel)
 	x = player_data->player->x;
 	y = (player_data->player->y + sin(player_data->rotation_angle)
 			* (pixel * MOVE_SPEED));
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
+	if (ft_strchr("NEWS0", mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)]))
 	{
 		ft_init_cord(player_data->player, x, y);
 		ft_render_map(mlx);
@@ -68,7 +68,7 @@ void	ft_move_sides(t_mlx *mlx, int pixel)
 	x = player->x + sin(mlx->player_data->rotation_angle)
 		* (pixel * MOVE_SPEED);
 	y = player->y;
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
+	if (ft_strchr("NEWS0", mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)]))
 	{
 		ft_init_cord(player, x, y);
 		ft_render_map(mlx);
@@ -76,7 +76,7 @@ void	ft_move_sides(t_mlx *mlx, int pixel)
 	x = player->x;
 	y = player->y + cos(mlx->player_data->rotation_angle)
 		* (pixel * MOVE_SPEED);
-	if (ft_strchr("NEWS0", mlx->map_data->map[y / TILE_SIZE][x / TILE_SIZE]))
+	if (ft_strchr("NEWS0", mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)]))
 	{
 		ft_init_cord(player, x, y);
 		ft_render_map(mlx);

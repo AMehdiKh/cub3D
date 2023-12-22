@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:15:13 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/14 04:14:15 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/21 02:35:38 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_check_rgb(t_map *map_data, char *elem, int *color)
 
 void	ft_rgb_init(t_map *map_data, char *elem, int *color, int *i)
 {
-	unsigned int	rgb;
+	uint32_t	rgb;
 
 	rgb = 0;
 	map_data->map_check->digit = 1;
