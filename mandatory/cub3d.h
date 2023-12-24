@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/22 13:36:56 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/24 20:31:06 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,6 @@ typedef struct s_player
 	double		field_of_view;
 }	t_player;
 
-typedef struct s_mlx
-{
-	mlx_image_t		*img;
-	mlx_t			*win;
-	mlx_texture_t	*no_text;
-	mlx_texture_t	*so_text;
-	mlx_texture_t	*we_text;
-	mlx_texture_t	*ea_text;
-	t_map			*map_data;
-	t_player		player_data[1];
-	double			map_scale;
-}	t_mlx;
-
 typedef struct s_casting
 {
 	t_cord		h_insec[1];
@@ -135,6 +122,7 @@ typedef struct s_casting
 typedef struct s_ray
 {
 	mlx_texture_t	*texture;
+	uint32_t 		**text_color;
 	t_cord			wall_hit[1];
 	double			ray_angle;
 	double			ray_distance;
@@ -145,6 +133,26 @@ typedef struct s_ray
 	int				ray_right;
 	int				ray_left;
 }	t_ray;
+
+typedef struct s_mlx
+{
+	mlx_image_t		*img;
+	mlx_t			*win;
+	mlx_texture_t	*no_text;
+	mlx_texture_t	*so_text;
+	mlx_texture_t	*we_text;
+	mlx_texture_t	*ea_text;
+	uint32_t 		**north_color;
+	uint32_t 		**south_color;
+	uint32_t 		**west_color;
+	uint32_t 		**east_color;
+	t_map			*map_data;
+	t_player		player_data[1];
+	double			map_scale;
+	t_ray			*rays;
+	t_casting		*cast;
+	t_cord			pos_text[1];
+}	t_mlx;
 
 // parse_map.c
 void	ft_check_arg(int ac, char *av);
@@ -178,10 +186,15 @@ void	ft_draw_pixels(t_mlx *mlx, int xc, int yc, int x, int y, int color);
 void	ft_isolate_content(t_map *map_data, int start);
 void	ft_init_cord(t_cord *cord, double x, double y);
 
+//Textures
+void	load_texture(t_mlx *mlx);
+void  	load_pngs(t_mlx *mlx);
+uint32_t	ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t o);
+
 double	ft_character_direction(t_map *map_data);
 void	ft_turn(t_mlx *mlx, int pixel);
 void	ft_move_straight(t_mlx *mlx, int pixel);
-void	ft_move_sides(t_mlx *mlx, int pixel);
+void	ft_move_sides(t_mlx *mlx, int pixel, t_cord cor);
 void	ft_hooks(void *param);
 void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding);
 void	bresenhams_line(t_mlx *mlx, int x1, int y1, int x2, int y2);

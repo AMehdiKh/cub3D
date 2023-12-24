@@ -1,3 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Bresenham_circle.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/24 19:37:27 by mzoheir           #+#    #+#             */
+/*   Updated: 2023/12/24 19:37:36 by mzoheir          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
 void	ft_draw_pixels(t_mlx *mlx, int xc, int yc, int x, int y, int color)
 {
 	mlx_put_pixel(mlx->img, xc + x, yc + y, color);

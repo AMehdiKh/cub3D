@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+         #
+#    By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2023/12/22 12:36:08 by ael-khel         ###   ########.fr        #
+#    Updated: 2023/12/24 15:34:31 by mzoheir          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = cub3D
 ################################################################################
 OBJ_DIR = objs
 
-FILES = main parse_map check_directions check_rgb check_map_content utils graphics bresenham_line ray_casting mini_map player_movements render_walls
+FILES = main parse_map check_directions check_rgb check_map_content utils graphics bresenham_line ray_casting mini_map player_movements render_walls textures
 
 SRCS = ${addsuffix .c, $(FILES)}
 
@@ -34,7 +34,7 @@ LIBMLX = MLX42/build/libmlx42.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@
+	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@
 
 $(LIBFT):
 	$(MAKE) -C LibFT

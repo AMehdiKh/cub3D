@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bresenham_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 19:20:10 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/05 14:54:36 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/24 15:05:15 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 //     }
 // }
 
-void dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1, int color) {
+void dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1, int color) 
+{
     int dx = abs(X1 - X0);
     int dy = abs(Y1 - Y0);
     int twoDy = 2 * dy;
