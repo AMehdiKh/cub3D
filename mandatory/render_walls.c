@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 22:56:41 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/24 21:53:10 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/25 10:28:00 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,12 @@ void	ft_render_walls(t_mlx *mlx, t_ray *rays)
 		wall_strip_height = (int)projected_wall_height;
 		wall_top_pixel = (HEIGHT / 2) - (wall_strip_height / 2);
 		wall_bottom_pixel = (HEIGHT / 2) + (wall_strip_height / 2);
-		scale_cord_text(mlx, wall_top_pixel, wall_bottom_pixel, &rays[i]);
+		wall_top_pixel = wall_top_pixel > HEIGHT ? HEIGHT : wall_top_pixel;
+		wall_top_pixel = wall_top_pixel * (wall_top_pixel > 0);
+		wall_bottom_pixel = wall_bottom_pixel > HEIGHT ? HEIGHT : wall_bottom_pixel;
+		wall_bottom_pixel = wall_bottom_pixel < 0 ? 0 : wall_bottom_pixel;
+		dda(mlx, i, wall_top_pixel, i, wall_bottom_pixel, rays[i].color);
+		// scale_cord_text(mlx, wall_top_pixel, wall_bottom_pixel, &rays[i]);
 		++i;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:20:45 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/24 18:45:08 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/25 10:26:04 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ void	ft_move_straight(t_mlx *mlx, int pixel)
 	x = (player_data->player->x + cos(player_data->rotation_angle)
 			* (pixel * MOVE_SPEED));
 	y = player_data->player->y;
-	if (mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] != 1)
+	if (mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] != '1')
 		ft_init_cord(player_data->player, x, y);
 	x = player_data->player->x;
 	y = (player_data->player->y + sin(player_data->rotation_angle)
 			* (pixel * MOVE_SPEED));
-	if (mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] != 1)
+	if (mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] != '1')
 		ft_init_cord(player_data->player, x, y);
 	ft_render_map(mlx);
 }
