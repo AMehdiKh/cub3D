@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/24 20:31:06 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/27 10:37:07 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 // # define WIDTH 2240
 # define MOVE_SPEED 5
-# define ROT_SPEED 2
+# define ROT_SPEED 5
 # define WIDTH 1800
 # define HEIGHT 960
 # define BPP 4
@@ -107,8 +107,8 @@ typedef struct s_casting
 	double		y_first;
 	double		h_distance;
 	double		v_distance;
-	size_t		x_index;
-	size_t		y_index;
+	int			x_index;
+	int			y_index;
 	int			ray_up;
 	int			ray_down;
 	int			ray_right;
@@ -194,7 +194,7 @@ uint32_t	ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t o);
 double	ft_character_direction(t_map *map_data);
 void	ft_turn(t_mlx *mlx, int pixel);
 void	ft_move_straight(t_mlx *mlx, int pixel);
-void	ft_move_sides(t_mlx *mlx, int pixel, t_cord cor);
+void	ft_move_sides(t_mlx *mlx, int pixel);
 void	ft_hooks(void *param);
 void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding);
 void	bresenhams_line(t_mlx *mlx, int x1, int y1, int x2, int y2);
@@ -217,7 +217,5 @@ void	ft_square(t_mlx *mlx, t_cord *square, int color);
 void	ft_size_mini_map(t_mlx *mlx, t_map *map_data);
 void	ft_ray_texture(t_mlx *mlx, t_ray *ray);
 void	ft_open_textures(t_mlx *mlx);
-
-
 
 #endif

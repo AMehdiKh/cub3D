@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 17:09:17 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/24 19:06:48 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/27 12:03:00 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ void	ft_v_intersection(t_casting *cast)
 	{
 		cast->x_index = floor((cast->v_insec->x + cast->ray_left) / TILE_SIZE);
 		cast->y_index = floor(cast->v_insec->y / TILE_SIZE);
-		if (cast->map[cast->y_index][cast->x_index] == '1')
+		if (cast->x_index < 0)
+			cast->x_index = 0;
+		// printf("Ypixel = %F, Yindex = %d\nXpixel = %F, Xindex = %d\nwidth = %d, height = %d\n", cast->v_insec->y, cast->y_index, cast->v_insec->x, cast->x_index, cast->width, cast->height);
+		if (cast->x_index < (int)ft_strlen(cast->map[cast->y_index]) && cast->map[cast->y_index][cast->x_index] == '1')
 		{
 			cast->v_found_wall = 1;
 			break ;
@@ -117,8 +120,10 @@ void	ft_h_intersection(t_casting *cast)
 	{
 		cast->x_index = floor(cast->h_insec->x / TILE_SIZE);
 		cast->y_index = floor((cast->h_insec->y + cast->ray_up) / TILE_SIZE);
+		if (cast->y_index < 0)
+			cast->y_index = 0;
 		// printf("Ypixel = %F, Yindex = %d\nXpixel = %F, Xindex = %d\nwidth = %d, height = %d\n", cast->h_insec->y, cast->y_index, cast->h_insec->x, cast->x_index, cast->width, cast->height);
-		if (cast->x_index < ft_strlen(cast->map[cast->y_index]) && cast->map[cast->y_index][cast->x_index] == '1')
+		if (cast->x_index < (int)ft_strlen(cast->map[cast->y_index]) && cast->map[cast->y_index][cast->x_index] == '1')
 		{
 			cast->h_found_wall = 1;
 			break ;
