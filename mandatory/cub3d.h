@@ -6,14 +6,13 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/27 12:35:58 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/27 12:40:54 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <sys/_types/_size_t.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdlib.h>
@@ -220,7 +219,5 @@ void	ft_square(t_mlx *mlx, t_cord *square, int color);
 void	ft_size_mini_map(t_mlx *mlx, t_map *map_data);
 void	ft_ray_texture(t_mlx *mlx, t_ray *ray);
 void	ft_open_textures(t_mlx *mlx);
-
-
 
 #endif

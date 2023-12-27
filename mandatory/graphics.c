@@ -6,11 +6,12 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:31:10 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/27 12:32:21 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/27 12:41:28 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <stdio.h>
 
 void	ft_graphics(t_map *map_data)
 {
@@ -42,10 +43,8 @@ void	ft_init_mlx(t_mlx *mlx)
 		mlx_terminate(mlx->win);
 		ft_err("Error: Putting image to window failed", mlx->map_data);
 	}
-	
 	ft_open_textures(mlx);
 	load_texture(mlx);
-	
 	mlx->player_data->player = mlx->map_data->character;
 	mlx->player_data->rotation_angle = ft_character_direction(mlx->map_data);
 	mlx->player_data->rotation_speed = ROT_SPEED * (M_PI / 180);
@@ -71,7 +70,8 @@ void	ft_open_textures(t_mlx *mlx)
 void	ft_render_map(t_mlx	*mlx)
 {
 	t_ray	rays[WIDTH];
-
+	static int i;
+	printf("[%d] KHDAMA\n", i);
 	ft_paint_ceiling_floor(mlx);
 	ft_cast_rays(mlx, rays);
 	int	i;
@@ -85,6 +85,7 @@ void	ft_render_map(t_mlx	*mlx)
 	ft_render_walls(mlx, rays);
 	ft_mini_map(mlx);
 	ft_draw_rays(mlx, rays);
+	++i;
 }
 
 void	ft_paint_ceiling_floor(t_mlx *mlx)
