@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:20:45 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/27 11:51:30 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/27 12:29:28 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	ft_hooks(void *param)
 		ft_move_sides(mlx, 1);
 	else if (mlx_is_key_down(mlx->win, MLX_KEY_A))
 		ft_move_sides(mlx, -1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_RIGHT))
+	else if (mlx_is_key_down(mlx->win, MLX_KEY_RIGHT))
 		ft_turn(mlx, 1);
-	if (mlx_is_key_down(mlx->win, MLX_KEY_LEFT))
+	else if (mlx_is_key_down(mlx->win, MLX_KEY_LEFT))
 		ft_turn(mlx, -1);
 	if (mlx_is_key_down(mlx->win, MLX_KEY_ESCAPE))
 		ft_esc(mlx);
@@ -47,8 +47,10 @@ void	ft_move_straight(t_mlx *mlx, int pixel)
 	y = mlx->player_data->player->y + sin(mlx->player_data->rotation_angle)
 		* (pixel * MOVE_SPEED);
 	if (mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] != '1')
+	{
 		ft_init_cord(mlx->player_data->player, x, y);
-	ft_render_map(mlx);
+		ft_render_map(mlx);
+	}
 }
 
 void	ft_move_sides(t_mlx *mlx, int pixel)
@@ -73,8 +75,10 @@ void	ft_move_sides(t_mlx *mlx, int pixel)
 		x = mlx->player_data->player->x + cos(mlx->player_data->rotation_angle 
 				- M_PI / 2) * MOVE_SPEED;
 	if (mlx->map_data->map[(int)(y / TILE_SIZE)][(int)(x / TILE_SIZE)] != '1')
+	{
 		ft_init_cord(mlx->player_data->player, x, y);
-	ft_render_map(mlx);
+		ft_render_map(mlx);
+	}
 }
 
 void	ft_turn(t_mlx *mlx, int pixel)

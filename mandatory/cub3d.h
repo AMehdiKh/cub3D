@@ -6,14 +6,13 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/27 10:37:07 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/27 12:31:19 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <sys/_types/_size_t.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdlib.h>
@@ -26,7 +25,7 @@
 
 // # define WIDTH 2240
 # define MOVE_SPEED 5
-# define ROT_SPEED 5
+# define ROT_SPEED 3
 # define WIDTH 1800
 # define HEIGHT 960
 # define BPP 4
