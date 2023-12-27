@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:26:45 by mzoheir           #+#    #+#             */
-/*   Updated: 2023/12/24 15:36:40 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/27 11:27:56 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,14 @@ void	load_texture(t_mlx *mlx)
 	mlx->south_color = fill_texture(mlx->so_text);
 	mlx->east_color = fill_texture(mlx->ea_text);
 	mlx->west_color = fill_texture(mlx->we_text);
-	if(!mlx->north_color || !mlx->south_color || !mlx->east_color || !mlx->west_color)
-    {
-        //free all
-        printf("ERROR Filling Textures!\n");
-    }
+	// if(!mlx->north_color)
+    //     // free all
+	// if(!mlx->south_color)
+	// 	// free all
+	// if(!mlx->east_color)
+	// 	// free all
+	// if(!mlx->west_color)
+	// 	// free all
 }
 
 void   load_pngs(t_mlx *mlx)

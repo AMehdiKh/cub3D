@@ -6,7 +6,7 @@
 #    By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2023/12/24 15:34:31 by mzoheir          ###   ########.fr        #
+#    Updated: 2023/12/26 16:54:22 by mzoheir          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ OBJS = ${SRCS:%.c=$(OBJ_DIR)/%.o}
 ################################################################################
 CC = gcc
 
-CFLAGS = -Wall -Wextra -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 ################################################################################
 LIBFT = LibFT/libft.a
 
@@ -34,7 +34,7 @@ LIBMLX = MLX42/build/libmlx42.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@
+	$(CC) $(OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/opt/glfw/lib" -fsanitize=address -g  -o $@
 
 $(LIBFT):
 	$(MAKE) -C LibFT

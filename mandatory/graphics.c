@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:31:10 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/24 19:38:25 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/27 12:32:21 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ void	ft_render_map(t_mlx	*mlx)
 
 	ft_paint_ceiling_floor(mlx);
 	ft_cast_rays(mlx, rays);
+	int	i;
+	
+	i = 0;
+	while (i < WIDTH)
+	{
+		ft_ray_texture(mlx, &rays[i]);
+		i++;
+	}
 	ft_render_walls(mlx, rays);
 	ft_mini_map(mlx);
 	ft_draw_rays(mlx, rays);
