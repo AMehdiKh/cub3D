@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:31:10 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/27 12:44:03 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/30 18:05:39 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ void	ft_open_textures(t_mlx *mlx)
 {
 	load_pngs(mlx);
 	
-	// if (!mlx->no_text || !mlx->so_text || !mlx->we_text || !mlx->ea_text)
-	// {
-	// 	mlx_delete_texture(NULL);
-	// 	mlx_delete_texture(mlx->no_text);
-	// 	mlx_delete_texture(mlx->so_text);
-	// 	mlx_delete_texture(mlx->we_text);
-	// 	mlx_delete_texture(mlx->ea_text);
-	// 	mlx_terminate(mlx->win);
-	// 	ft_err("Error: Texture failed to open", mlx->map_data);
-	// }
+	if (!mlx->no_text || !mlx->so_text || !mlx->we_text || !mlx->ea_text)
+	{
+		// mlx_delete_texture(NULL);
+		// mlx_delete_texture(mlx->no_text);
+		// mlx_delete_texture(mlx->so_text);
+		// mlx_delete_texture(mlx->we_text);
+		// mlx_delete_texture(mlx->ea_text);
+		// mlx_terminate(mlx->win);
+		ft_err("Error: Texture failed to open", mlx->map_data);
+	}
 }
 
 void	ft_render_map(t_mlx	*mlx)
@@ -74,7 +74,7 @@ void	ft_render_map(t_mlx	*mlx)
 	ft_paint_ceiling_floor(mlx);
 	ft_cast_rays(mlx, rays);
 	ft_render_walls(mlx, rays);
-	ft_mini_map(mlx);
+	// ft_mini_map(mlx);
 	ft_draw_rays(mlx, rays);
 	++i;
 }

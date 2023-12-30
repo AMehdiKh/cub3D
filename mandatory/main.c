@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:25:12 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/17 13:17:02 by ael-khel         ###   ########.fr       */
+/*   Updated: 2023/12/30 15:26:57 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ int	main(int ac, char **av)
 	ft_parse_map(map_data, av[1]);
 	ft_check_map(map_data);
 	ft_graphics(map_data);
+	
 	return (EXIT_SUCCESS);
 }

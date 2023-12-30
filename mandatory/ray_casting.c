@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 17:09:17 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/27 12:42:26 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/27 19:22:14 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	ft_h_intersection(t_casting *cast)
 		if (cast->y_index < 0)
 			cast->y_index = 0;
 		// printf("Ypixel = %F, Yindex = %d\nXpixel = %F, Xindex = %d\nwidth = %d, height = %d\n", cast->h_insec->y, cast->y_index, cast->h_insec->x, cast->x_index, cast->width, cast->height);
-		if (cast->x_index < ft_strlen(cast->map[cast->y_index]) && cast->map[cast->y_index][cast->x_index] == '1')
+		if (cast->x_index < (int)ft_strlen(cast->map[cast->y_index]) && cast->map[cast->y_index][cast->x_index] == '1')
 		{
 			cast->h_found_wall = 1;
 			break ;

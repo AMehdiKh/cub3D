@@ -6,7 +6,7 @@
 /*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/27 12:40:54 by mzoheir          ###   ########.fr       */
+/*   Updated: 2023/12/30 17:50:46 by mzoheir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ typedef struct s_casting
 typedef struct s_ray
 {
 	mlx_texture_t	*texture;
-	uint32_t		**text_color;
+	uint32_t		*text_color;
 	t_cord			wall_hit[1];
 	double			ray_angle;
 	double			ray_distance;
@@ -141,10 +141,10 @@ typedef struct s_mlx
 	mlx_texture_t	*so_text;
 	mlx_texture_t	*we_text;
 	mlx_texture_t	*ea_text;
-	uint32_t		**north_color;
-	uint32_t		**south_color;
-	uint32_t		**west_color;
-	uint32_t		**east_color;
+	uint32_t		*north_color;
+	uint32_t		*south_color;
+	uint32_t		*west_color;
+	uint32_t		*east_color;
 	t_map			*map_data;
 	t_player		player_data[1];
 	double			map_scale;
@@ -190,7 +190,7 @@ void	ft_init_cord(t_cord *cord, double x, double y);
 void	load_texture(t_mlx *mlx);
 void  	load_pngs(t_mlx *mlx);
 uint32_t	ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t o);
-uint32_t	**fill_texture(mlx_texture_t *text);
+uint32_t	*fill_texture(mlx_texture_t *text);
 
 
 double	ft_character_direction(t_map *map_data);
