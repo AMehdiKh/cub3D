@@ -1,8 +1,8 @@
-EA ./path_to_the_east_texture
-NO ./path_to_the_north_texture
+EA /Users/mzoheir/Desktop/Last_Cub/mandatory/Textures/dodo.png
+NO /Users/mzoheir/Desktop/Last_Cub/mandatory/Textures/dodo.png
 
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
+SO /Users/mzoheir/Desktop/Last_Cub/mandatory/Textures/dodo.png
+WE /Users/mzoheir/Desktop/Last_Cub/mandatory/Textures/dodo.png
 
 F 75,139,59
 C 135,206,235
