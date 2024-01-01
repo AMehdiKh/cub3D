@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/30 20:39:04 by mzoheir          ###   ########.fr       */
+/*   Updated: 2024/01/01 16:51:32 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 # include "LibFT/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
 
-// # define WIDTH 2240
+# define WIDTH 2240
 # define MOVE_SPEED 5
 # define ROT_SPEED 3
-# define WIDTH 1800
+// # define WIDTH 1800
 # define HEIGHT 960
 # define BPP 4
 # define TILE_SIZE 32
@@ -219,5 +219,6 @@ void	ft_square(t_mlx *mlx, t_cord *square, int color);
 void	ft_size_mini_map(t_mlx *mlx, t_map *map_data);
 void	ft_ray_texture(t_mlx *mlx, t_ray *ray);
 void	ft_open_textures(t_mlx *mlx);
+void	ft_turns(void *param);
 
 #endif

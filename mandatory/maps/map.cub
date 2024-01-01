@@ -1,14 +1,14 @@
-EA /Users/mzoheir/Desktop/Last_Cub/mandatory/Textures/dodo.png
-NO /Users/mzoheir/Desktop/Last_Cub/mandatory/Textures/dodo.png
+EA ./Textures/ki.png
+NO ./Textures/N(1).png
 
-SO /Users/mzoheir/Desktop/Last_Cub/mandatory/Textures/dodo.png
-WE /Users/mzoheir/Desktop/Last_Cub/mandatory/Textures/dodo.png
+SO ./Textures/S(1).png
+WE ./Textures/he.png
 
-F 75,139,59
-C 135,206,235
+C 36,43,75
+F 125,10,10
 
 1111111111111111111111111
-10000000000S0000000000001
 1000000000000000000000001
+10000000000N0000000000001
 1000000000000000000000001
 1111111111111111111111111

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   graphics.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:31:10 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/30 19:21:38 by mzoheir          ###   ########.fr       */
+/*   Updated: 2024/01/01 16:57:04 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "MLX42/include/MLX42/MLX42.h"
 #include "cub3d.h"
+#include <stdint.h>
 #include <stdio.h>
 
 void	ft_graphics(t_map *map_data)
@@ -53,13 +55,12 @@ void	ft_init_mlx(t_mlx *mlx)
 void	ft_render_map(t_mlx	*mlx)
 {
 	t_ray	rays[WIDTH];
-	static int i;
+
 	ft_paint_ceiling_floor(mlx);
 	ft_cast_rays(mlx, rays);
 	ft_render_walls(mlx, rays);
 	ft_mini_map(mlx);
 	ft_draw_rays(mlx, rays);
-	++i;
 }
 
 void	ft_paint_ceiling_floor(t_mlx *mlx)
@@ -68,4 +69,19 @@ void	ft_paint_ceiling_floor(t_mlx *mlx)
 		mlx->img->width * mlx->img->height);
 	ft_paint_pixels(mlx->img->pixels, mlx->map_data->c_color,
 		mlx->img->width * (mlx->img->height / 2));
+	uint32_t y;
+	uint32_t x;
+
+	y = 0;
+	while (y < mlx->img->height / 2)
+	{
+		x = 0;
+		while (x < mlx->img->width)
+		{
+			if (x % ((rand() % 60000) + 1) == 0)
+				mlx_put_pixel(mlx->img, x, y, 0xfefd93ff);
+			++x;
+		}
+		++y;
+	}
 }

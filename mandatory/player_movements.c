@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_movements.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzoheir <mzoheir@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:20:45 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/27 15:27:40 by mzoheir          ###   ########.fr       */
+/*   Updated: 2024/01/01 16:56:44 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_hooks(void *param)
 		ft_move_sides(mlx, 1);
 	else if (mlx_is_key_down(mlx->win, MLX_KEY_A))
 		ft_move_sides(mlx, -1);
-	else if (mlx_is_key_down(mlx->win, MLX_KEY_RIGHT))
+	if (mlx_is_key_down(mlx->win, MLX_KEY_RIGHT))
 		ft_turn(mlx, 1);
 	else if (mlx_is_key_down(mlx->win, MLX_KEY_LEFT))
 		ft_turn(mlx, -1);
