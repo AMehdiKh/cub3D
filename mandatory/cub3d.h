@@ -6,13 +6,14 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/01 16:51:32 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/03 19:49:33 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include <stdint.h>
 # include <unistd.h>
 # include <limits.h>
 # include <stdlib.h>
@@ -23,10 +24,9 @@
 # include "LibFT/libft.h"
 # include "MLX42/include/MLX42/MLX42.h"
 
-# define WIDTH 2240
+# define WIDTH 1280
 # define MOVE_SPEED 5
 # define ROT_SPEED 3
-// # define WIDTH 1800
 # define HEIGHT 960
 # define BPP 4
 # define TILE_SIZE 32
@@ -52,8 +52,8 @@ typedef struct s_check
 	int			we_elem;
 	int			ea_elem;
 
-	uint32_t	f_elem;
-	uint32_t	c_elem;
+	int			f_elem;
+	int			c_elem;
 	int			comma_count;
 	int			digit_count;
 	int			digit;
@@ -72,8 +72,8 @@ typedef struct s_map
 	char		*we_text;
 	char		*ea_text;
 
-	int			c_color;
-	int			f_color;
+	uint32_t	c_color;
+	uint32_t	f_color;
 
 	char		character_dire;
 
@@ -126,6 +126,8 @@ typedef struct s_ray
 	double			ray_angle;
 	double			ray_distance;
 	uint32_t		color;
+	int				wall_top_pixel;
+	int				wall_bottom_pixel;
 	int				ray_type;
 	int				ray_up;
 	int				ray_down;
@@ -171,8 +173,8 @@ void	ft_check_walls(t_map *map_data, char **map, size_t x, size_t y);
 
 // check_rgb.c
 void	ft_rgb_elem(t_map *map_data, char **elem, int option);
-void	ft_check_rgb(t_map *map_data, char *elem, int *color);
-void	ft_rgb_init(t_map *map_data, char *elem, int *color, int *i);
+void	ft_check_rgb(t_map *map_data, char *elem, uint32_t *color);
+void	ft_rgb_init(t_map *map_data, char *elem, uint32_t *color, int *i);
 
 // utils.c
 int		ft_err(char *str, t_map *map_data);
@@ -188,16 +190,16 @@ void	ft_init_cord(t_cord *cord, double x, double y);
 
 //Textures
 void	load_texture(t_mlx *mlx);
-void  	load_pngs(t_mlx *mlx);
+void	ft_load_textures(t_mlx *mlx);
 uint32_t	ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t o);
 uint32_t	*fill_texture(mlx_texture_t *text);
 
 
-double	ft_character_direction(t_map *map_data);
+double	ft_player_angle(t_map *map_data);
 void	ft_turn(t_mlx *mlx, int pixel);
 void	ft_move_straight(t_mlx *mlx, int pixel);
 void	ft_move_sides(t_mlx *mlx, int pixel);
-void	ft_hooks(void *param);
+void	ft_player_movements(void *param);
 void	ft_player_square(t_mlx *mlx, t_cord *square, int color, int padding);
 void	bresenhams_line(t_mlx *mlx, int x1, int y1, int x2, int y2);
 void	dda(t_mlx *mlx, int X0, int Y0, int X1, int Y1, int color);
@@ -216,9 +218,12 @@ void	ft_draw_rays(t_mlx *mlx, t_ray *rays);
 void	ft_paint_ceiling_floor(t_mlx *mlx);
 void	ft_render_walls(t_mlx *mlx, t_ray *rays);
 void	ft_square(t_mlx *mlx, t_cord *square, int color);
-void	ft_size_mini_map(t_mlx *mlx, t_map *map_data);
-void	ft_ray_texture(t_mlx *mlx, t_ray *ray);
+void	ft_scale_mini_map(t_mlx *mlx, t_map *map_data);
+void	ft_init_ray_texture(t_mlx *mlx, t_ray *ray);
 void	ft_open_textures(t_mlx *mlx);
 void	ft_turns(void *param);
+void	ft_init_ray_directions(t_ray *ray, t_casting *cast);
+
+
 
 #endif

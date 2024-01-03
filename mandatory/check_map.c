@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_directions.c                                 :+:      :+:    :+:   */
+/*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:38:30 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/11/17 22:44:11 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/02 20:21:30 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,6 @@ void	ft_check_map(t_map *map_data)
 	ft_check_content(map_data, i);
 }
 
-int	ft_all_elements(t_check *map_check)
-{
-	return (map_check->no_elem && map_check->so_elem
-		&& map_check->we_elem && map_check->ea_elem
-		&& map_check->c_elem && map_check->f_elem);
-}
-
 void	ft_check_elements(t_map *map_data)
 {
 	t_check	*map_check;
@@ -70,17 +63,9 @@ void	ft_check_elements(t_map *map_data)
 	map_check->num_elem += 1;
 }
 
-void	ft_direc_elem(t_map *map_data, char **dire_text, int *dire_elem)
+int	ft_all_elements(t_check *map_check)
 {
-	int	i;
-
-	i = 0;
-	while (map_data->map_check->elem[i])
-		++i;
-	if (i != 2)
-		ft_err("[!] Error: Invalid map.", map_data);
-	*dire_text = ft_strdup(map_data->map_check->elem[1]);
-	if (!*dire_text)
-		ft_err("[!] Error: Invalid map.", map_data);
-	*dire_elem = 1;
+	return (map_check->no_elem && map_check->so_elem
+		&& map_check->we_elem && map_check->ea_elem
+		&& map_check->c_elem && map_check->f_elem);
 }

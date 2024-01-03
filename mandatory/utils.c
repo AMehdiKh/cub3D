@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 15:39:04 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/21 18:02:16 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/03 21:21:18 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ void	ft_esc(void *param)
 
 	mlx = param;
 	ft_destroy_map_data(mlx->map_data);
-	mlx_delete_texture(mlx->no_text);
-	mlx_delete_texture(mlx->so_text);
-	mlx_delete_texture(mlx->we_text);
-	mlx_delete_texture(mlx->ea_text);
+	if (mlx->no_text)
+		mlx_delete_texture(mlx->no_text);
+	if (mlx->so_text)
+		mlx_delete_texture(mlx->so_text);
+	if (mlx->we_text)
+		mlx_delete_texture(mlx->we_text);
+	if (mlx->ea_text)
+		mlx_delete_texture(mlx->ea_text);
 	mlx_terminate(mlx->win);
 	exit(EXIT_SUCCESS);
 }
@@ -98,7 +102,7 @@ double	ft_normalize_angle(double *angle)
 	return (*angle);
 }
 
-double	ft_character_direction(t_map *map_data)
+double	ft_player_angle(t_map *map_data)
 {
 	if (map_data->character_dire == 'N')
 		return (3 * M_PI / 2);
@@ -111,19 +115,7 @@ double	ft_character_direction(t_map *map_data)
 	return (0);
 }
 
-void	ft_draw_rays(t_mlx *mlx, t_ray *rays)
+uint32_t	ft_rgb(uint32_t r, uint32_t g, uint32_t b, uint32_t o)
 {
-	int	i;
-
-	i = 0;
-	while (i < WIDTH)
-	{
-		dda(mlx,
-			mlx->player_data->player->x * mlx->map_scale,
-			mlx->player_data->player->y * mlx->map_scale,
-			rays[i].wall_hit->x * mlx->map_scale,
-			rays[i].wall_hit->y * mlx->map_scale,
-			rays[i].color);
-		++i;
-	}
+	return (r << 24 | g << 16 | b << 8 | o);
 }

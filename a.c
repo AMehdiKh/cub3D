@@ -1,5 +1,25 @@
 #include <stdio.h>
 
+
+
+	// uint32_t	y;
+	// uint32_t	x;
+	// ft_paint_ceiling_floor(mlx);
+	// 	y = 0;
+	// while (y < mlx->img->height / 2)
+	// {
+	// 	x = 0;
+	// 	while (x < mlx->img->width)
+	// 	{
+	// 		if (x % ((rand() % 60000) + 1) == 0)
+	// 			mlx_put_pixel(mlx->img, x, y, 0xfefd93ff);
+	// 		++x;
+	// 	}
+	// 	++y;
+	// }
+
+
+
 // Function to draw a pixel
 void drawPixel(int x, int y) {
 	printf("(%d, %d)\n", x, y);

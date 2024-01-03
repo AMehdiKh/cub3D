@@ -6,7 +6,7 @@
 #    By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2023/12/31 11:01:58 by ael-khel         ###   ########.fr        #
+#    Updated: 2024/01/02 23:47:19 by ael-khel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = cub3D
 ################################################################################
 OBJ_DIR = objs
 
-FILES = main parse_map check_directions check_rgb check_map_content utils graphics bresenham_line ray_casting mini_map player_movements render_walls textures
+FILES = main parse_map check_map check_map_elements check_map_content utils graphics ray_casting mini_map player_movements render_walls textures
 
 SRCS = ${addsuffix .c, $(FILES)}
 

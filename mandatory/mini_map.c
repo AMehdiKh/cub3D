@@ -6,13 +6,40 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 22:51:42 by ael-khel          #+#    #+#             */
-/*   Updated: 2023/12/22 13:10:49 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/02 23:46:37 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_size_mini_map(t_mlx *mlx, t_map *map_data)
+void	ft_mini_map(t_mlx *mlx)
+{
+	t_map	*map_data;
+	t_cord	square[1];
+	int		y;
+	int		x;
+
+	map_data = mlx->map_data;
+	ft_scale_mini_map(mlx, map_data);
+	y = 0;
+	while (map_data->map[y])
+	{
+		x = 0;
+		while (map_data->map[y][x])
+		{
+			ft_init_cord(square, x * TILE_SIZE, y * TILE_SIZE);
+			if (map_data->map[y][x] == '1')
+				ft_square(mlx, square, 0x772f1aff);
+			else
+				ft_square(mlx, square, 0x55a630ff);
+			++x;
+		}
+		++y;
+	}
+	ft_player_square(mlx, mlx->player_data->player, 0xd90429FF, 2);
+}
+
+void	ft_scale_mini_map(t_mlx *mlx, t_map *map_data)
 {
 	int		width_limit;
 	int		height_limit;
@@ -38,33 +65,6 @@ void	ft_size_mini_map(t_mlx *mlx, t_map *map_data)
 	ft_esc(mlx);
 }
 
-void	ft_mini_map(t_mlx *mlx)
-{
-	t_map	*map_data;
-	t_cord	square[1];
-	int		y;
-	int		x;
-
-	map_data = mlx->map_data;
-	ft_size_mini_map(mlx, map_data);
-	y = 0;
-	while (map_data->map[y])
-	{
-		x = 0;
-		while (map_data->map[y][x])
-		{
-			ft_init_cord(square, x * TILE_SIZE, y * TILE_SIZE);
-			if (map_data->map[y][x] == '1')
-				ft_square(mlx, square, 0x772f1aff);
-			else
-				ft_square(mlx, square, 0x55a630ff);
-			++x;
-		}
-		++y;
-	}
-	ft_player_square(mlx, mlx->player_data->player, 0xd90429FF, 2);
-}
-
 void	ft_square(t_mlx *mlx, t_cord *square, int color)
 {
 	int	x_start;
@@ -81,7 +81,8 @@ void	ft_square(t_mlx *mlx, t_cord *square, int color)
 		while (x_start < x_end)
 		{
 			mlx_put_pixel(mlx->img, x_start, y_start, color);
-			if (y_start == square->y * mlx->map_scale || x_start == square->x * mlx->map_scale)
+			if (y_start == square->y * mlx->map_scale
+				|| x_start == square->x * mlx->map_scale)
 				mlx_put_pixel(mlx->img, x_start, y_start, 0x222222ff);
 			++x_start;
 		}
