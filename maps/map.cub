@@ -1,17 +1,14 @@
-NO /Users/ael-khel/Desktop/cub3D/Textures/N(1).png
-SO /Users/ael-khel/Desktop/cub3D/Textures/S(1).png
-WE /Users/ael-khel/Desktop/cub3D/Textures/W(1).png
-EA /Users/ael-khel/Desktop/cub3D/Textures/E(1).png
-
 C 36,43,75
-F 125,10,10
+F 01,10,255
+
+
 
 1111111111111
 1000000000001
+1000000000001                                                                                   
 1000000000001
 1000000000001
-1000000000001
-100000N000001
+1000N00000111
 1000000000001
 1000000000001
 1000000000001

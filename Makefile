@@ -6,7 +6,7 @@
 #    By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/06 15:15:43 by ael-khel          #+#    #+#              #
-#    Updated: 2024/01/04 14:57:38 by ael-khel         ###   ########.fr        #
+#    Updated: 2024/01/04 21:35:11 by ael-khel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ B_OBJS = ${B_SRCS:%.c=$(B_OBJ_DIR)/%.o}
 ################################################################################
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror
 ################################################################################
 LIBFT = LibFT/libft.a
 
@@ -51,8 +51,8 @@ LIBMLX = MLX42/build/libmlx42.a
 
 man: $(NAME)
 
-$(NAME): $(LIBFT) $(M_OBJS)
-	$(CC) $(M_OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@
+$(NAME): $(LIBFT) $(LIBMLX) $(M_OBJS)
+	$(CC) $(M_OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/homebrew/opt/glfw/lib" -o $@
 
 $(M_OBJ_DIR)/%.o: $(M_DIR)/%.c $(M_DIR)/cub3d.h
 	@mkdir -p $(@D)
@@ -60,8 +60,8 @@ $(M_OBJ_DIR)/%.o: $(M_DIR)/%.c $(M_DIR)/cub3d.h
 
 bonus: $(B_NAME)
 
-$(B_NAME): $(LIBFT) $(B_OBJS)
-	$(CC) $(B_OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/homebrew/opt/glfw/lib" -fsanitize=address -static-libsan -o $@
+$(B_NAME): $(LIBFT) $(LIBMLX) $(B_OBJS)
+	$(CC) $(B_OBJS) $(LIBFT) $(LIBMLX) -Iinclude -lglfw -L"/Users/$(USER)/homebrew/opt/glfw/lib" -o $@
 
 $(B_OBJ_DIR)/%.o: $(B_DIR)/%.c $(B_DIR)/cub3d_bonus.h
 	@mkdir -p $(@D)
@@ -71,6 +71,9 @@ all: man bonus
 
 $(LIBFT):
 	$(MAKE) -C LibFT
+
+$(LIBMLX):
+	(cd MLX42 && cmake -B build && cmake --build build -j4)
 
 clean:
 	$(MAKE) fclean -C LibFT
