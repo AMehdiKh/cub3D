@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_map_elements.c                               :+:      :+:    :+:   */
+/*   check_map_elements_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:15:13 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/04 15:05:28 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:04:47 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_bonus.h"
 
 void	ft_direc_elem(t_map *map_data, char **dire_text, int *dire_elem)
 {
