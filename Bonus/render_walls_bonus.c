@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 22:56:41 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/04 15:05:18 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/05 21:16:33 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,6 @@ void	ft_load_textures(t_mlx *mlx)
 	mlx->ea_text = mlx_load_png(mlx->map_data->ea_text);
 	if (!mlx->ea_text)
 		ft_esc(mlx);
-}
-
-void	ft_init_ray_texture(t_mlx *mlx, t_ray *ray)
-{
-	if (ray->ray_type == H_RAY && ray->ray_down)
-		ray->texture = mlx->so_text;
-	else if (ray->ray_type == H_RAY && ray->ray_up)
-		ray->texture = mlx->no_text;
-	else if (ray->ray_type == V_RAY && ray->ray_left)
-		ray->texture = mlx->we_text;
-	else if (ray->ray_type == V_RAY && ray->ray_right)
-		ray->texture = mlx->ea_text;
 }
 
 uint32_t	ft_get_pixel_color(t_ray *ray, int y_offset, int x_offset)
@@ -63,12 +51,7 @@ void	ft_scale_cord_text(t_mlx *mlx, t_ray *ray, int x)
 	y = ray->wall_top_pixel;
 	if (ray->wall_top_pixel < 0)
 		y = 0;
-	if (ray->ray_type == H_RAY)
-		x_offset = remainder(ray->wall_hit->x, TILE_SIZE) * ray->texture->width
-			/ TILE_SIZE;
-	else if (ray->ray_type == V_RAY)
-		x_offset = remainder(ray->wall_hit->y, TILE_SIZE) * ray->texture->width
-			/ TILE_SIZE;
+	x_offset = ft_text_x_offset(ray);
 	while (y < ray->wall_bottom_pixel && y < HEIGHT)
 	{
 		y_offset = (1 - ((double)(ray->wall_bottom_pixel - y) / line_height))
@@ -77,6 +60,30 @@ void	ft_scale_cord_text(t_mlx *mlx, t_ray *ray, int x)
 			ft_get_pixel_color(ray, y_offset, x_offset));
 		y++;
 	}
+}
+
+double	ft_text_x_offset(t_ray *ray)
+{
+	double	x_offset;
+
+	x_offset = 0;
+	if (ray->ray_type == H_RAY)
+	{
+		x_offset = ray->texture->width - fmod(ray->wall_hit->x, TILE_SIZE)
+			* ray->texture->width / TILE_SIZE;
+		if (ray->ray_up)
+			x_offset = fmod(ray->wall_hit->x, TILE_SIZE) * ray->texture->width
+				/ TILE_SIZE;
+	}
+	else if (ray->ray_type == V_RAY)
+	{
+		x_offset = fmod(ray->wall_hit->y, TILE_SIZE)
+			* ray->texture->width / TILE_SIZE;
+		if (ray->ray_left)
+			x_offset = ray->texture->width - fmod(ray->wall_hit->y, TILE_SIZE)
+				* ray->texture->width / TILE_SIZE;
+	}
+	return (x_offset);
 }
 
 void	ft_render_walls(t_mlx *mlx, t_ray *rays)

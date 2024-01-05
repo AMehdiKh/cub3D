@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/05 02:23:36 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/05 21:19:20 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,10 +203,11 @@ void		ft_calc_h_inter(t_casting *cast);
 void		ft_h_intersection(t_casting *cast);
 void		ft_calc_v_inter(t_casting *cast);
 void		ft_v_intersection(t_casting *cast);
+void		ft_init_ray_texture(t_mlx *mlx, t_ray *ray);
 
 // render_walls.c
 void		ft_load_textures(t_mlx *mlx);
-void		ft_init_ray_texture(t_mlx *mlx, t_ray *ray);
+double		ft_text_x_offset(t_ray *ray);
 void		ft_render_walls(t_mlx *mlx, t_ray *rays);
 void		ft_scale_cord_text(t_mlx *mlx, t_ray *ray, int x);
 uint32_t	ft_get_pixel_color(t_ray *ray, int y_offset, int x_offset);

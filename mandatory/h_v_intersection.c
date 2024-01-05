@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:21:40 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/04 11:23:07 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/05 21:18:35 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,16 @@ void	ft_v_intersection(t_casting *cast)
 		cast->v_insec->y += cast->y_step;
 		cast->v_insec->x += cast->x_step;
 	}
+}
+
+void	ft_init_ray_texture(t_mlx *mlx, t_ray *ray)
+{
+	if (ray->ray_type == H_RAY && ray->ray_down)
+		ray->texture = mlx->so_text;
+	else if (ray->ray_type == H_RAY && ray->ray_up)
+		ray->texture = mlx->no_text;
+	else if (ray->ray_type == V_RAY && ray->ray_left)
+		ray->texture = mlx->we_text;
+	else if (ray->ray_type == V_RAY && ray->ray_right)
+		ray->texture = mlx->ea_text;
 }
