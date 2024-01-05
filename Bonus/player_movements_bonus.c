@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:20:45 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/04 14:52:20 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/05 02:35:01 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,30 @@ void	ft_turn(t_mlx *mlx, int pixel)
 	player_data = mlx->player_data;
 	player_data->rotation_angle += (pixel * player_data->rotation_speed);
 	ft_normalize_angle(&player_data->rotation_angle);
+}
+
+void	ft_mouse_rotation(double xpos, double ypos, void *param)
+{
+	t_mlx		*mlx;
+	static int	old_xpos;
+	static int	i;
+
+	mlx = param;
+	if (old_xpos == 0)
+		old_xpos = xpos;
+	if (i++ == 1)
+	{
+		if (xpos < old_xpos
+			&& xpos > 0 && xpos < WIDTH && ypos > 0 && ypos < HEIGHT)
+			mlx->player_data->rotation_angle
+				-= (mlx->player_data->rotation_speed * 1);
+		if (xpos > old_xpos
+			&& xpos > 0 && xpos < WIDTH && ypos > 0 && ypos < HEIGHT)
+			mlx->player_data->rotation_angle
+				+= (mlx->player_data->rotation_speed * 1);
+		ft_normalize_angle(&mlx->player_data->rotation_angle);
+		i = 0;
+		old_xpos = xpos;
+		ft_render_map(mlx);
+	}
 }

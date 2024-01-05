@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/04 21:51:15 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/05 02:23:36 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,13 @@
 # include "../LibFT/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 
-# define WIDTH 1280
+# define WIDTH 1920
+# define HEIGHT 1080
 # define MOVE_SPEED 5
 # define ROT_SPEED 3
-# define HEIGHT 960
 # define BPP 4
 # define TILE_SIZE 32
 # define FOV_ANGLE 60
-# define SCALE 0.25
 # define H_RAY 0
 # define V_RAY 1
 

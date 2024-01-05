@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 22:51:42 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/04 14:52:20 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/05 02:04:28 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,10 @@ void	ft_scale_mini_map(t_mlx *mlx, t_map *map_data)
 	int		height_limit;
 	double	scale;
 
-	if (map_data->map_width >= WIDTH || map_data->map_height >= HEIGHT)
-	{
-		ft_putendl_fd("Error: The map is larger than it should be", 2);
-		ft_esc(mlx);
-	}
 	width_limit = WIDTH / 4;
 	height_limit = HEIGHT / 4;
 	scale = 1;
-	while (scale <= 256)
+	while (scale <= 16)
 	{
 		mlx->map_scale = 1 / scale;
 		if (map_data->map_width * mlx->map_scale < width_limit

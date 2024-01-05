@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 19:28:15 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/04 15:03:53 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/05 02:26:19 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,13 @@
 # include "../LibFT/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
 
-# define WIDTH 1280
+# define WIDTH 1920
+# define HEIGHT 1080
 # define MOVE_SPEED 5
 # define ROT_SPEED 3
-# define HEIGHT 960
 # define BPP 4
 # define TILE_SIZE 32
 # define FOV_ANGLE 60
-# define SCALE 0.25
 # define H_RAY 0
 # define V_RAY 1
 
@@ -182,6 +181,7 @@ void		ft_check_walls(t_map *map_data, char **map, size_t x, size_t y);
 
 // player_movements.c
 void		ft_player_movements(void *param);
+void		ft_mouse_rotation(double xpos, double ypos, void *param);
 void		ft_move_straight(t_mlx *mlx, int pixel);
 void		ft_move_sides(t_mlx *mlx, int pixel);
 void		ft_turn(t_mlx *mlx, int pixel);

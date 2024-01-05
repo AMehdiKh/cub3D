@@ -6,7 +6,7 @@
 /*   By: ael-khel <ael-khel@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 13:31:10 by ael-khel          #+#    #+#             */
-/*   Updated: 2024/01/04 14:52:20 by ael-khel         ###   ########.fr       */
+/*   Updated: 2024/01/05 02:27:05 by ael-khel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_graphics(t_map *map_data)
 	ft_init_mlx(mlx);
 	ft_render_map(mlx);
 	mlx_loop_hook(mlx->win, &ft_player_movements, mlx);
+	mlx_cursor_hook(mlx->win, &ft_mouse_rotation, mlx);
 	mlx_close_hook(mlx->win, &ft_esc, mlx);
 	mlx_loop(mlx->win);
 	ft_esc(mlx);
